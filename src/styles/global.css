@@ -1,0 +1,311 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Fonts — Cogapp brand faces.
+   Civil (ABC Dinamo) drives body/UI; Untitled Serif (Klim) drives headings.
+   Both are licensed: don't redistribute the woff2 outside Cogapp use.
+
+   Font URLs are absolute under the Pages base path. If you change `base` in
+   astro.config.mjs, update the `/cogapp-slides-template/` prefix below to match.
+--------------------------------------------------------------------------- */
+
+/* Untitled Serif */
+@font-face {
+  font-family: "Untitled serif";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-regular.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: "Untitled serif";
+  font-style: italic;
+  font-weight: 400;
+  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-regular-italic.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: "Untitled serif";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-bold.woff2") format("woff2");
+  font-display: optional;
+}
+
+/* Fallback metric adjuster: match Untitled Serif metrics so the swap is invisible */
+@font-face {
+  font-family: "Untitled serif fallback";
+  src: local("Georgia");
+  size-adjust: 102%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+/* Civil */
+@font-face {
+  font-family: Civil;
+  font-style: normal;
+  font-weight: 300;
+  font-feature-settings: "ss03", "tnum", "zero";
+  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Light2.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: normal;
+  font-weight: 400;
+  font-feature-settings: "ss03", "tnum", "zero";
+  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Regular2.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: italic;
+  font-weight: 400;
+  font-feature-settings: "zero";
+  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-RegularItalic.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: normal;
+  font-weight: 500;
+  font-feature-settings: "ss03", "tnum", "zero";
+  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Medium2.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: normal;
+  font-weight: 600;
+  font-feature-settings: "ss03", "tnum", "zero";
+  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-SemiBold2.woff2") format("woff2");
+  font-display: optional;
+}
+
+/* Fallback metric adjuster for Civil */
+@font-face {
+  font-family: "Civil fallback";
+  src: local("Helvetica Neue"), local("Arial");
+  size-adjust: 100%;
+  ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@theme {
+  --font-sans: Civil, "Civil fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Untitled serif", "Untitled serif fallback", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Cogapp palette — cream base, slate ink, and four pastel accents. */
+  --color-cream: #ebebe1;
+  --color-slate: #282828;
+  --color-grey: #717171;
+  --color-light-grey: #f6f6f7;
+  --color-pink: #ffdaea;
+  --color-green: #edffda;
+  --color-purple: #e8daff;
+  --color-blue: #dae9ff;
+
+  /* semantic roles */
+  --color-focus: #227bff;
+
+  --text-3xl: 3.815rem;
+  --text-4xl: 4.768rem;
+  --text-5xl: 5.96rem;
+}
+
+@layer base {
+  html, body {
+    background: var(--color-cream);
+    color: var(--color-slate);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-pink);
+    color: var(--color-slate);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-40px); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Slide content typography (`.prose-slide`).
+   MDX compiles to bare HTML (<h1>, <p>, <ul>, <blockquote>…) with no class
+   hooks, so these elements are styled here rather than with Tailwind utilities.
+   Everything else in the deck (layout, nav, components) uses Tailwind classes.
+--------------------------------------------------------------------------- */
+@utility prose-slide {
+  & h1 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 2rem;
+  }
+  & h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 2rem;
+  }
+  & h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin: 0 0 1rem;
+  }
+  & p {
+    font-size: clamp(1.35rem, 1.9vw, 1.7rem);
+    line-height: 1.5;
+    margin: 0 0 1.15rem;
+    max-width: 62ch;
+  }
+  & ul:not(.bullets), & ol {
+    font-size: clamp(1.35rem, 1.9vw, 1.7rem);
+    padding-left: 2rem;
+    margin: 0 0 1.5rem;
+    list-style: disc;
+  }
+  & ol { list-style: decimal; }
+  & li { margin-bottom: 0.5rem; line-height: 1.45; }
+  & table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+    margin: 0 0 1.5rem;
+  }
+  & th, & td {
+    border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding: 0.55rem 1rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  & th {
+    font-family: var(--font-sans);
+    font-size: 0.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  & blockquote {
+    border-left: 3px solid currentColor;
+    padding-left: 1.5rem;
+    margin: 2rem 0 1.5rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+    line-height: 1.3;
+    max-width: 44ch;
+  }
+  & strong { font-weight: 600; }
+  /* Quote attribution line */
+  & .cite {
+    display: block;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+    margin-top: 0.6rem;
+  }
+  & .cite::before { content: "– "; }
+  /* Lead paragraph for statement slides — large, for Zoom legibility */
+  & .lead {
+    font-size: clamp(1.9rem, 2.8vw, 2.6rem);
+    line-height: 1.35;
+    margin: 0 0 1.25rem;
+    max-width: 46ch;
+  }
+  & a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+  & a:hover {
+    text-decoration-color: var(--color-focus);
+    text-decoration-thickness: 2px;
+  }
+  & a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* Laptop screens: keep slide on one viewport, no scroll */
+@media (max-height: 900px) {
+  .prose-slide h1 { font-size: clamp(2.8rem, 6.5vh, 4.5rem); margin: 0 0 1.25rem; }
+  .prose-slide h2 { font-size: clamp(2.1rem, 4.8vh, 3rem); margin: 0 0 1rem; }
+  .prose-slide h3 { font-size: clamp(1.5rem, 3vh, 1.9rem); margin: 0 0 0.6rem; }
+  .prose-slide p { font-size: clamp(1.35rem, 2.4vh, 1.6rem); margin: 0 0 0.7rem; }
+  .prose-slide ul:not(.bullets), .prose-slide ol {
+    font-size: clamp(1.35rem, 2.4vh, 1.6rem);
+    margin: 0 0 0.9rem;
+  }
+  .prose-slide .lead { font-size: clamp(1.8rem, 3.6vh, 2.4rem); margin: 0 0 1rem; }
+  .prose-slide .bullets li { font-size: clamp(1.4rem, 2.5vh, 1.75rem); }
+  .prose-slide li { margin-bottom: 0.35rem; }
+  .prose-slide blockquote {
+    font-size: clamp(1.7rem, 3.4vh, 2.2rem);
+    padding-left: 1.2rem;
+    margin: 1.4rem 0 0.9rem;
+  }
+  .prose-slide table { font-size: clamp(1.1rem, 2vh, 1.3rem); margin: 0 0 0.8rem; }
+  .prose-slide th, .prose-slide td { padding: 0.45rem 0.8rem; }
+
+  /* Start-aligned (content) slides: tighten the top row on short screens so
+     content anchors near the top. Center slides are left to stay centered. */
+  main[data-slide][style*="grid-template-rows"] {
+    grid-template-rows: 6vh auto 1fr !important;
+  }
+}
+
+/* Slide pages allow scrolling when content overflows */
+main[data-slide] {
+  overflow-y: auto;
+}

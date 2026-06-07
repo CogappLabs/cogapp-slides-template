@@ -1,0 +1,21 @@
+---
+title: Bullets
+section: Components
+bg: cream
+align: start
+notes: |
+  The Bullets component renders a dash-marked list (no disc). Pass size="lg"
+  for a larger, sparser list on a key slide.
+---
+
+import Bullets from "../../components/Bullets.astro";
+
+## Key points
+
+<Bullets size="lg">
+- First point, kept to a single line where possible.
+- Second point that carries the main argument.
+- Third point, with a **bold** phrase for emphasis.
+</Bullets>
+
+<p class="opacity-80">Plain paragraphs sit alongside bullets. A standard markdown list (without the component) renders as a normal disc list instead.</p>

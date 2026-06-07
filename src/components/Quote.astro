@@ -1,0 +1,15 @@
+---
+// A pull quote with optional attribution.
+// Default renders as a <blockquote> (large italic serif, left rule).
+// The slot is the quote text; `cite` is the attribution line below it.
+// Leave `cite` unset for an unattributed quote.
+interface Props {
+  cite?: string;
+}
+const { cite } = Astro.props;
+---
+
+<blockquote>
+  <slot />
+  {cite && <span class="cite">{cite}</span>}
+</blockquote>

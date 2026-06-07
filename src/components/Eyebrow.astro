@@ -1,0 +1,34 @@
+---
+// Small uppercase label above a heading (the "eyebrow").
+// Inherits the slide's text colour at an AA-safe opacity by default.
+// Pass `color` to override (e.g. an accent), `tracking` and `mb` to tune spacing.
+interface Props {
+  tracking?: "tight" | "normal" | "wide";
+  mb?: 4 | 6;
+  color?: string; // any Tailwind text-* class, e.g. "text-blue"
+  class?: string;
+}
+const { tracking = "normal", mb = 4, color, class: extra } = Astro.props;
+
+const trackMap = {
+  tight: "tracking-[0.1em]",
+  normal: "tracking-[0.12em]",
+  wide: "tracking-[0.16em]",
+};
+const mbMap = { 4: "mb-4", 6: "mb-6" };
+// currentColor at 0.85 clears WCAG AA on every deck background; an explicit
+// color prop is assumed to be chosen for contrast and is used at full strength.
+const colorClass = color ? color : "text-current opacity-85";
+---
+
+<span
+  class:list={[
+    "block font-sans text-sm font-medium uppercase",
+    trackMap[tracking],
+    mbMap[mb],
+    colorClass,
+    extra,
+  ]}
+>
+  <slot />
+</span>

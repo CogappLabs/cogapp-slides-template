@@ -1,0 +1,35 @@
+---
+title: Two column
+section: Layouts
+bg: cream
+align: start
+docs:
+  - https://docs.astro.build/
+  - label: Tailwind CSS
+    href: https://tailwindcss.com/
+notes: |
+  Two columns are a plain Tailwind grid in MDX — no component needed.
+  The `docs` frontmatter renders a collapsible References list at the
+  bottom of the slide; pass a URL, an array of URLs, or {label, href} objects.
+---
+
+import Bullets from "../../components/Bullets.astro";
+
+## Two columns
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-4">
+  <div>
+    <h3>Left</h3>
+    <Bullets>
+    - Use a Tailwind grid for side-by-side content.
+    - Stacks to one column on narrow screens.
+    </Bullets>
+  </div>
+  <div>
+    <h3>Right</h3>
+    <Bullets>
+    - Mix headings, bullets and prose freely.
+    - Each column is just MDX.
+    </Bullets>
+  </div>
+</div>

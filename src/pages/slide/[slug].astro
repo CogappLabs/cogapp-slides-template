@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import SlideLayout from "../../layouts/SlideLayout.astro";
+import { slideOrder } from "../../content/order";
+
+export async function getStaticPaths() {
+  const all = await getCollection("slides");
+  const bySlug = new Map(all.map((s) => [s.id, s]));
+  const total = slideOrder.length;
+  const first = slideOrder[0];
+  const last = slideOrder[total - 1];
+  return slideOrder.map((slug, i) => {
+    const slide = bySlug.get(slug);
+    if (!slide) {
+      throw new Error(
+        `Slide order references "${slug}" but no matching mdx file in src/content/slides/`,
+      );
+    }
+    return {
+      params: { slug },
+      props: {
+        slide,
+        order: i + 1,
+        total,
+        prev: i > 0 ? slideOrder[i - 1] : undefined,
+        next: i < total - 1 ? slideOrder[i + 1] : undefined,
+        first,
+        last,
+      },
+    };
+  });
+}
+
+const { slide, order, total, prev, next, first, last } = Astro.props;
+const { Content } = await render(slide);
+---
+
+<SlideLayout
+  bg={slide.data.bg}
+  align={slide.data.align}
+  title={slide.data.title}
+  order={order}
+  total={total}
+  prev={prev}
+  next={next}
+  first={first}
+  last={last}
+  section={slide.data.section}
+  docs={slide.data.docs}
+>
+  <Content />
+</SlideLayout>

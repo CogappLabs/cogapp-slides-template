@@ -1,0 +1,290 @@
+---
+import "../styles/global.css";
+import { ClientRouter, fade } from "astro:transitions";
+
+const slideAnim = {
+  forwards: {
+    old: {
+      name: "slideOutLeft",
+      duration: "0.25s",
+      easing: "ease-in",
+      fillMode: "forwards",
+    },
+    new: {
+      name: "slideInRight",
+      duration: "0.25s",
+      easing: "ease-out",
+      fillMode: "backwards",
+    },
+  },
+  backwards: {
+    old: {
+      name: "slideOutRight",
+      duration: "0.25s",
+      easing: "ease-in",
+      fillMode: "forwards",
+    },
+    new: {
+      name: "slideInLeft",
+      duration: "0.25s",
+      easing: "ease-out",
+      fillMode: "backwards",
+    },
+  },
+};
+
+interface Props {
+  bg?: "cream" | "slate" | "pink" | "green" | "purple" | "blue" | "white";
+  align?: "start" | "center" | "end";
+  title: string;
+  order: number;
+  total: number;
+  prev?: string;
+  next?: string;
+  first: string;
+  last: string;
+  section?: string;
+  docs?: string | Array<string | { label: string; href: string }>;
+}
+
+type DocLink = { label: string; href: string };
+function normaliseDocs(
+  d: Props["docs"],
+): DocLink[] {
+  if (!d) return [];
+  const arr = Array.isArray(d) ? d : [d];
+  return arr.map((item) => {
+    if (typeof item === "string") {
+      let label = item;
+      try {
+        const u = new URL(item);
+        label = u.hostname.replace(/^www\./, "") + u.pathname.replace(/\/$/, "");
+      } catch {}
+      return { label, href: item };
+    }
+    return item;
+  });
+}
+const {
+  bg = "cream",
+  align = "center",
+  title,
+  order,
+  total,
+  prev,
+  next,
+  first,
+  last,
+  section,
+  docs,
+} = Astro.props;
+const docLinks = normaliseDocs(docs);
+
+const bgClass: Record<string, string> = {
+  cream: "bg-cream text-slate",
+  slate: "bg-slate text-cream",
+  pink: "bg-pink text-slate",
+  green: "bg-green text-slate",
+  purple: "bg-purple text-slate",
+  blue: "bg-blue text-slate",
+  white: "bg-white text-slate",
+};
+
+const alignClass: Record<string, string> = {
+  start: "justify-start",
+  center: "justify-center",
+  end: "justify-end",
+};
+
+const progressPct = total > 1 ? ((order - 1) / (total - 1)) * 100 : 100;
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const homeHref = `${BASE}/`;
+const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
+---
+
+<!doctype html>
+<html lang="en" data-slide-first={first} data-slide-last={last} data-slide-base={BASE}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} · Cogapp</title>
+    <link rel="icon" type="image/png" href={`${BASE}/favicon.png`} />
+    <link rel="preload" href={`${BASE}/fonts/untitled-serif/untitled-serif-regular.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${BASE}/fonts/civil/CivilPremium-Regular2.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${BASE}/fonts/civil/CivilPremium-Medium2.woff2`} as="font" type="font/woff2" crossorigin />
+    <ClientRouter />
+  </head>
+  <body class={`${bgClass[bg]} m-0 min-h-screen transition-colors duration-300`}>
+    <div
+      class="fixed top-0 inset-x-0 h-[8px] bg-black/10 z-100"
+      role="progressbar"
+      aria-label="Presentation progress"
+      aria-valuenow={order}
+      aria-valuemin={1}
+      aria-valuemax={total}
+    >
+      <div
+        class="h-full bg-current opacity-60 transition-[width] duration-500"
+        style={`width:${progressPct}%`}
+      ></div>
+    </div>
+
+    <a
+      href={homeHref}
+      aria-label="Cogapp"
+      class="fixed top-5 left-6 opacity-70 z-50 no-underline text-current hover:opacity-100 transition-opacity"
+    >
+      <span
+        class="block w-[95px] h-[20px] bg-current"
+        style={`-webkit-mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;`}
+      ></span>
+    </a>
+
+    {align === "center" ? (
+      <main
+        data-slide
+        class="min-h-screen px-12 max-w-[1100px] w-full mx-auto flex flex-col justify-center items-start"
+        transition:animate={slideAnim}
+      >
+        <h1 class="sr-only">{title}</h1>
+        {section && (
+          <span class="block font-sans text-sm font-medium uppercase tracking-[0.1em] text-current opacity-85 mb-4">
+            {section}
+          </span>
+        )}
+        <div class="prose-slide w-full">
+          <slot />
+          {docLinks.length > 0 && (
+            <details class="mt-12 pt-6 border-t border-current/20 text-xs group">
+              <summary class="font-sans text-[0.65rem] uppercase tracking-[0.1em] opacity-60 cursor-pointer list-none select-none hover:opacity-100 [&::-webkit-details-marker]:hidden">
+                References <span class="opacity-60">({docLinks.length})</span> <span class="inline-block transition-transform group-open:rotate-90">›</span>
+              </summary>
+              <ul class="list-none p-0 mt-4 mb-0 space-y-1.5">
+                {docLinks.map((d) => (
+                  <li>
+                    <a href={d.href} target="_blank" rel="noopener noreferrer" class="font-mono text-current opacity-80 hover:opacity-100">{d.label} <span class="sr-only">(opens in new tab)</span></a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
+      </main>
+    ) : (
+      <main
+        data-slide
+        class="min-h-screen px-12 max-w-[1100px] w-full mx-auto grid"
+        style="grid-template-rows:18vh auto 1fr"
+        transition:animate={slideAnim}
+      >
+        <h1 class="sr-only">{title}</h1>
+        <div></div>
+        <header>
+          {section && (
+            <span class="block font-sans text-sm font-medium uppercase tracking-[0.1em] text-current opacity-85 mb-4">
+              {section}
+            </span>
+          )}
+        </header>
+        <div class="prose-slide self-start">
+          <slot />
+          {docLinks.length > 0 && (
+            <details class="mt-12 pt-6 border-t border-current/20 text-xs group">
+              <summary class="font-sans text-[0.65rem] uppercase tracking-[0.1em] opacity-60 cursor-pointer list-none select-none hover:opacity-100 [&::-webkit-details-marker]:hidden">
+                References <span class="opacity-60">({docLinks.length})</span> <span class="inline-block transition-transform group-open:rotate-90">›</span>
+              </summary>
+              <ul class="list-none p-0 mt-4 mb-0 space-y-1.5">
+                {docLinks.map((d) => (
+                  <li>
+                    <a href={d.href} target="_blank" rel="noopener noreferrer" class="font-mono text-current opacity-80 hover:opacity-100">{d.label} <span class="sr-only">(opens in new tab)</span></a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
+      </main>
+    )}
+
+    <nav
+      aria-label="Slide navigation"
+      class="fixed bottom-4 right-6 flex gap-1 items-center font-mono text-[0.95rem] text-slate bg-cream/95 backdrop-blur-sm px-2 py-1 rounded shadow-sm z-50"
+    >
+      {prev !== undefined && (
+        <a href={slidePath(prev)} aria-label="Previous slide" rel="prev" class="px-3 py-2 no-underline text-slate"><span aria-hidden="true">←</span></a>
+      )}
+      <span class="text-slate/70 px-1" aria-label={`Slide ${order} of ${total}`}>
+        <span aria-hidden="true" data-counter>{order}</span><span aria-hidden="true"> / </span><span aria-hidden="true">{total}</span>
+      </span>
+      {next !== undefined && (
+        <a href={slidePath(next)} aria-label="Next slide" rel="next" class="px-3 py-2 no-underline text-slate"><span aria-hidden="true">→</span></a>
+      )}
+    </nav>
+
+    <script>
+      import { navigate } from "astro:transitions/client";
+
+      const init = () => {
+        document.removeEventListener("keydown", onKey);
+        document.addEventListener("keydown", onKey);
+      };
+
+      let pendingDirection = null;
+      const setDirection = (dir) => {
+        pendingDirection = dir;
+      };
+      document.addEventListener("astro:before-preparation", (e) => {
+        if (pendingDirection) {
+          e.direction = pendingDirection;
+          pendingDirection = null;
+        }
+      });
+
+      const onKey = (e) => {
+        const nav = document.querySelector('nav[aria-label="Slide navigation"]');
+        if (!nav) return;
+        const prevLink = nav.querySelector('a[rel="prev"]');
+        const nextLink = nav.querySelector('a[rel="next"]');
+        const first = document.documentElement.dataset.slideFirst;
+        const last = document.documentElement.dataset.slideLast;
+        const base = document.documentElement.dataset.slideBase || "";
+
+        if (
+          e.key === "ArrowRight" ||
+          e.key === "ArrowDown" ||
+          e.key === "PageDown"
+        ) {
+          if (nextLink) {
+            e.preventDefault();
+            setDirection("forward");
+            navigate(nextLink.getAttribute("href"));
+          }
+        } else if (
+          e.key === "ArrowLeft" ||
+          e.key === "ArrowUp" ||
+          e.key === "PageUp"
+        ) {
+          if (prevLink) {
+            e.preventDefault();
+            setDirection("back");
+            navigate(prevLink.getAttribute("href"));
+          }
+        } else if (e.key === "Home" && first) {
+          setDirection("back");
+          navigate(`${base}/slide/${first}`);
+        } else if (e.key === "End" && last) {
+          setDirection("forward");
+          navigate(`${base}/slide/${last}`);
+        }
+      };
+
+      document.addEventListener("astro:before-swap", () => {
+        document.removeEventListener("keydown", onKey);
+      });
+      document.addEventListener("astro:page-load", init);
+      if (document.readyState !== "loading") init();
+</script>
+  </body>
+</html>
