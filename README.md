@@ -6,6 +6,9 @@ themed with the Cogapp palette and brand fonts (Civil + Untitled Serif).
 Write each slide as an MDX file, set the order in one list, and present in the
 browser with keyboard navigation. Export the whole deck to a single PDF.
 
+**Live demo:** https://cogapplabs.github.io/cogapp-slides-template/ — the
+example slides, deployed from this repo.
+
 ## Use this template
 
 On GitHub, click **Use this template** to create a new repo from it, or:
