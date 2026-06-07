@@ -103,14 +103,14 @@ The example slides demonstrate each one.
 
 ## Fonts
 
-Cogapp brand faces, both licensed (don't redistribute the woff2 outside Cogapp
-use):
+Cogapp brand faces. Cogapp holds redistribution rights for both:
 
 - **Civil** (ABC Dinamo) → `--font-sans` (body, labels, UI)
 - **Untitled Serif** (Klim) → `--font-serif` (headings)
 
 Files live in `public/fonts/`, declared as `@font-face` in `global.css`, and
 exposed as Tailwind tokens so `font-sans` / `font-serif` resolve everywhere.
+Reusing the fonts outside a Cogapp context is the reuser's responsibility.
 
 ## Stack
 

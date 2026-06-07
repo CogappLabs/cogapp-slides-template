@@ -3,7 +3,7 @@
 /* ---------------------------------------------------------------------------
    Fonts — Cogapp brand faces.
    Civil (ABC Dinamo) drives body/UI; Untitled Serif (Klim) drives headings.
-   Both are licensed: don't redistribute the woff2 outside Cogapp use.
+   Cogapp holds redistribution rights for both (see docs/adr/0001).
 
    Font src URLs are relative to this stylesheet (`../fonts/...`). Astro bundles
    this CSS under `<base>/_astro/`, so the URLs resolve to `<base>/fonts/...` and

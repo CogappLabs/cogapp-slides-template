@@ -40,8 +40,9 @@ the single source of truth for sequence.
   `base` (and `site`) in `astro.config.mjs`. Fonts, home link, and slide links
   all derive from it. Do NOT hardcode the base path anywhere, and do NOT change
   the `../fonts/` URLs in `global.css` to absolute paths (see docs/adr/0002).
-- **Fonts are licensed** (Civil, Untitled Serif) and committed to the repo. Keep
-  this repo private; don't redistribute the woff2 (see docs/adr/0001).
+- **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
+  redistribution rights, so it can be public (see docs/adr/0001). Reusing the
+  fonts outside a Cogapp context is the reuser's licensing responsibility.
 
 ## After changes
 
