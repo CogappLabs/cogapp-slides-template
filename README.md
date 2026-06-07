@@ -85,8 +85,13 @@ section and feature slides.
 | `blue` | Blue `#dae9ff` | slate |
 | `white` | White | slate |
 
+Use `cream`, `slate` or `white` for content-heavy slides; the four pastels are
+accents, best on section dividers and sparse feature slides where the lighter
+contrast against slate text reads fine.
+
 All colours are `--color-*` tokens in `src/styles/global.css` and resolve as
-Tailwind utilities (`bg-pink`, `text-slate`, etc.).
+Tailwind utilities (`bg-pink`, `text-slate`, etc.). Two muted neutrals,
+`grey` and `light-grey`, round out the palette for secondary text and panels.
 
 ## Components
 

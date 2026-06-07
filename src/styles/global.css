@@ -100,7 +100,9 @@
   --font-serif: "Untitled serif", "Untitled serif fallback", Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Cogapp palette — cream base, slate ink, and four pastel accents. */
+  /* Cogapp palette. Neutrals carry most slides; the four pastels are accents
+     for section dividers and feature slides. grey / light-grey are available
+     for muted text and panels (used via Tailwind utilities, e.g. text-grey). */
   --color-cream: #ebebe1;
   --color-slate: #282828;
   --color-grey: #717171;
