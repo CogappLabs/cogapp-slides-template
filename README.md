@@ -16,8 +16,9 @@ gh repo create CogappLabs/my-deck --template CogappLabs/cogapp-slides-template
 
 Then, in the new repo:
 
-1. Set `base` in `astro.config.mjs` to `/<your-repo-name>` and update the
-   matching `/cogapp-slides-template/` font URL prefix in `src/styles/global.css`.
+1. Set `base` in `astro.config.mjs` to `/<your-repo-name>` (and `site` to your
+   org Pages URL). Everything else, including the font URLs, follows `base`
+   automatically.
 2. Replace the example slides in `src/content/slides/` and the order in
    `src/content/order.ts`.
 3. Update the deck title and intro copy in `src/pages/index.astro`.
@@ -56,7 +57,8 @@ Node 22.18+ / 23+ via built-in type stripping.
 ## Slides
 
 - Content lives in `src/content/slides/<slug>.mdx`
-- Order is set in `src/content/order.ts` (move a line to reorder)
+- Order is set in `src/content/order.ts` (move a line to reorder). A slide file
+  not listed there is silently excluded; a slug listed with no file is a build error.
 - Frontmatter: `title`, optional `bg`, `align`, `section`, `notes`, `docs`
 
 | Frontmatter | Purpose |

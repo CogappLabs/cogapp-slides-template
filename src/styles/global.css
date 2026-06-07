@@ -5,8 +5,9 @@
    Civil (ABC Dinamo) drives body/UI; Untitled Serif (Klim) drives headings.
    Both are licensed: don't redistribute the woff2 outside Cogapp use.
 
-   Font URLs are absolute under the Pages base path. If you change `base` in
-   astro.config.mjs, update the `/cogapp-slides-template/` prefix below to match.
+   Font src URLs are relative to this stylesheet (`../fonts/...`). Astro bundles
+   this CSS under `<base>/_astro/`, so the URLs resolve to `<base>/fonts/...` and
+   auto-follow `base` — renaming the deck needs no edit here.
 --------------------------------------------------------------------------- */
 
 /* Untitled Serif */
@@ -14,21 +15,21 @@
   font-family: "Untitled serif";
   font-style: normal;
   font-weight: 400;
-  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-regular.woff2") format("woff2");
+  src: url("../fonts/untitled-serif/untitled-serif-regular.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
   font-family: "Untitled serif";
   font-style: italic;
   font-weight: 400;
-  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-regular-italic.woff2") format("woff2");
+  src: url("../fonts/untitled-serif/untitled-serif-regular-italic.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
   font-family: "Untitled serif";
   font-style: normal;
   font-weight: 700;
-  src: url("/cogapp-slides-template/fonts/untitled-serif/untitled-serif-bold.woff2") format("woff2");
+  src: url("../fonts/untitled-serif/untitled-serif-bold.woff2") format("woff2");
   font-display: optional;
 }
 
@@ -48,7 +49,7 @@
   font-style: normal;
   font-weight: 300;
   font-feature-settings: "ss03", "tnum", "zero";
-  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Light2.woff2") format("woff2");
+  src: url("../fonts/civil/CivilPremium-Light2.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
@@ -56,7 +57,7 @@
   font-style: normal;
   font-weight: 400;
   font-feature-settings: "ss03", "tnum", "zero";
-  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Regular2.woff2") format("woff2");
+  src: url("../fonts/civil/CivilPremium-Regular2.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
@@ -64,7 +65,7 @@
   font-style: italic;
   font-weight: 400;
   font-feature-settings: "zero";
-  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-RegularItalic.woff2") format("woff2");
+  src: url("../fonts/civil/CivilPremium-RegularItalic.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
@@ -72,7 +73,7 @@
   font-style: normal;
   font-weight: 500;
   font-feature-settings: "ss03", "tnum", "zero";
-  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-Medium2.woff2") format("woff2");
+  src: url("../fonts/civil/CivilPremium-Medium2.woff2") format("woff2");
   font-display: optional;
 }
 @font-face {
@@ -80,7 +81,7 @@
   font-style: normal;
   font-weight: 600;
   font-feature-settings: "ss03", "tnum", "zero";
-  src: url("/cogapp-slides-template/fonts/civil/CivilPremium-SemiBold2.woff2") format("woff2");
+  src: url("../fonts/civil/CivilPremium-SemiBold2.woff2") format("woff2");
   font-display: optional;
 }
 
