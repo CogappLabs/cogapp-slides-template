@@ -116,6 +116,9 @@ exposed as Tailwind tokens so `font-sans` / `font-serif` resolve everywhere.
 
 Astro 6, MDX, Tailwind v4, Node 22+.
 
+`CLAUDE.md` holds a short guide for working on the deck with Claude Code (the
+authoring procedure, theme rules, and the things that are easy to get wrong).
+
 ## Deploy
 
 `.github/workflows/deploy.yml` builds and publishes to GitHub Pages on push to
