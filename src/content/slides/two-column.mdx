@@ -8,13 +8,16 @@ docs:
   - label: Tailwind CSS
     href: https://tailwindcss.com/
 notes: |
-  Two columns are a plain Tailwind grid in MDX, so no component is needed.
-  Use the `TwoCol` component instead when you want a weighted ratio.
-  The `docs` frontmatter renders a collapsible References list at the
-  bottom of the slide; pass a URL, an array of URLs, or {label, href} objects.
+  An even split is a plain Tailwind grid, so no component is needed. Reach for
+  `TwoCol` when you want a weighted split (`ratio="2-1"` or `"1-2"`): it also
+  guards against wide content stretching a column past its share.
+
+  The `docs` frontmatter renders a collapsible References list at the bottom
+  of the slide; pass a URL, an array of URLs, or {label, href} objects.
 ---
 
 import Bullets from "../../components/Bullets.astro";
+import TwoCol from "../../components/TwoCol.astro";
 
 ## Two columns
 
@@ -22,7 +25,7 @@ import Bullets from "../../components/Bullets.astro";
   <div>
     <h3>Left</h3>
     <Bullets>
-    - Use a Tailwind grid for side-by-side content.
+    - An even split is a plain Tailwind grid.
     - Stacks to one column on narrow screens.
     </Bullets>
   </div>
@@ -34,3 +37,19 @@ import Bullets from "../../components/Bullets.astro";
     </Bullets>
   </div>
 </div>
+
+<h3 class="mt-10">Weighted: <code>TwoCol</code></h3>
+
+<TwoCol ratio="2-1">
+  <div>
+    <Bullets>
+    - `ratio="2-1"` gives this side twice the width. `"1-2"` flips it.
+    - Also stops wide content (code, tables) blowing out a column.
+    </Bullets>
+  </div>
+  <div>
+    <Bullets>
+    - Narrower support column.
+    </Bullets>
+  </div>
+</TwoCol>
