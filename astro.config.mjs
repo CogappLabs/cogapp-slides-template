@@ -3,7 +3,6 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 import restart from "vite-plugin-restart";
-import remarkGfm from "remark-gfm";
 
 import react from "@astrojs/react";
 
@@ -14,7 +13,9 @@ export default defineConfig({
   site: "https://cogapplabs.github.io",
   base: "/cogapp-slides-template",
   trailingSlash: "ignore",
-  integrations: [mdx({ remarkPlugins: [remarkGfm] }), react()],
+  // Sätteri, Astro 7's Markdown processor, applies GFM itself, so tables and
+  // strikethrough need no remark plugin.
+  integrations: [mdx(), react()],
   vite: {
     plugins: [
       tailwindcss(),
