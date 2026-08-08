@@ -1,0 +1,23 @@
+---
+interface Props {
+  title?: string;
+  text: string;
+  class?: string;
+}
+const { title = "claude", text, class: className = "" } = Astro.props;
+---
+
+{/* Editor-style chrome, so the hex values here are deliberate and sit outside
+    the brand palette. Terminal output should look like a terminal. */}
+<div class:list={[
+  "rounded-lg overflow-hidden shadow-xl bg-[#1e1e1e] text-[#d4d4d4] font-mono text-sm leading-relaxed w-full",
+  className,
+]}>
+  <div class="flex items-center gap-2 px-3 py-2 bg-[#2d2d2d] border-b border-black/40">
+    <span class="w-3 h-3 rounded-full bg-[#ff5f56]" aria-hidden="true"></span>
+    <span class="w-3 h-3 rounded-full bg-[#ffbd2e]" aria-hidden="true"></span>
+    <span class="w-3 h-3 rounded-full bg-[#27c93f]" aria-hidden="true"></span>
+    <span class="ml-3 text-xs text-[#969696] select-none">{title}</span>
+  </div>
+  <pre class="p-4 m-0 whitespace-pre-wrap break-words w-full max-w-full overflow-hidden">{text}</pre>
+</div>

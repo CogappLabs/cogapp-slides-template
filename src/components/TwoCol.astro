@@ -1,0 +1,18 @@
+---
+interface Props {
+  ratio?: "1-1" | "2-1" | "1-2";
+}
+const { ratio = "1-1" } = Astro.props;
+const cls =
+  ratio === "2-1"
+    ? "md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
+    : ratio === "1-2"
+      ? "md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
+      : "md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]";
+---
+
+{/* minmax(0,…) and min-w-0 stop wide children (code blocks, tables, long URLs)
+    forcing a column past its share of the grid. */}
+<div class:list={["grid gap-6 md:gap-12 items-start [&>*]:w-full [&>*]:min-w-0 [&>*]:overflow-hidden", cls]}>
+  <slot />
+</div>
