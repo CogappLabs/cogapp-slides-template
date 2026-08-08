@@ -7,6 +7,9 @@ export const slideOrder = [
   "bullets",
   "quote",
   "two-column",
+  "two-col-component",
   "table",
+  "terminal",
+  "react-island",
   "closing",
 ] as const;

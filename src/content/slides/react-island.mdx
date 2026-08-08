@@ -1,0 +1,28 @@
+---
+title: React island
+section: Components
+bg: purple
+align: start
+notes: |
+  Most slides are static HTML. When one needs real interactivity, drop in a
+  React component with a `client:*` directive and Astro ships JS for that
+  component alone. `client:load` hydrates on page load; `client:visible` waits
+  until the slide is scrolled into view.
+
+  This poll is per-browser and resets on reload, so it reads the room live.
+docs:
+  - label: Astro islands
+    href: https://docs.astro.build/en/concepts/islands/
+---
+
+import Poll from "../../components/Poll.tsx";
+
+## React island
+
+<Poll
+  client:load
+  question="Which do you reach for first?"
+  options={["Keyboard shortcuts", "The slide index", "Clicking the arrows"]}
+/>
+
+<p class="opacity-80 mt-6">Everything else on this slide is static HTML. Only the poll ships JavaScript.</p>
