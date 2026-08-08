@@ -26,7 +26,7 @@ _Avoid_: id, name, key (when referring to slide identity)
 **Order**:
 The deck's slide sequence, declared explicitly as a list of slugs in
 `src/content/order.ts`. The single source of truth for sequence. A slide file
-that exists but is not listed is silently excluded from the deck; a slug listed
+that exists but is not listed is excluded from the deck with no error; a slug listed
 with no matching file is a build error.
 _Avoid_: sequence, sort, index
 

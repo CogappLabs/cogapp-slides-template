@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # Generated deck export
 deck.pdf
+
+# Playwright MCP captures
+.playwright-mcp/

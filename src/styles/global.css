@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Fonts — Cogapp brand faces.
+   Fonts: Cogapp brand faces.
    Civil (ABC Dinamo) drives body/UI; Untitled Serif (Klim) drives headings.
    Cogapp holds redistribution rights for both (see docs/adr/0001).
 
    Font src URLs are relative to this stylesheet (`../fonts/...`). Astro bundles
    this CSS under `<base>/_astro/`, so the URLs resolve to `<base>/fonts/...` and
-   auto-follow `base` — renaming the deck needs no edit here.
+   auto-follow `base`, so renaming the deck needs no edit here.
 --------------------------------------------------------------------------- */
 
 /* Untitled Serif */
@@ -255,7 +255,7 @@
     margin-top: 0.6rem;
   }
   & .cite::before { content: "– "; }
-  /* Lead paragraph for statement slides — large, for Zoom legibility */
+  /* Lead paragraph for statement slides: large, for Zoom legibility */
   & .lead {
     font-size: clamp(1.9rem, 2.8vw, 2.6rem);
     line-height: 1.35;

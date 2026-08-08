@@ -1,13 +1,13 @@
 # Cogapp slides template
 
-A starting point for building presentation decks at Cogapp. Astro 6 + MDX,
+A starting point for building presentation decks at Cogapp. Astro 7 + MDX,
 themed with the Cogapp palette and brand fonts (Civil + Untitled Serif).
 
 Write each slide as an MDX file, set the order in one list, and present in the
 browser with keyboard navigation. Export the whole deck to a single PDF.
 
-**Live demo:** https://cogapplabs.github.io/cogapp-slides-template/ — the
-example slides, deployed from this repo.
+**Live demo:** https://cogapplabs.github.io/cogapp-slides-template/ (the
+example slides, deployed from this repo).
 
 ## Use this template
 
@@ -61,7 +61,8 @@ Node 22.18+ / 23+ via built-in type stripping.
 
 - Content lives in `src/content/slides/<slug>.mdx`
 - Order is set in `src/content/order.ts` (move a line to reorder). A slide file
-  not listed there is silently excluded; a slug listed with no file is a build error.
+  not listed there is excluded with no warning; a slug listed with no file is a
+  build error.
 - Frontmatter: `title`, optional `bg`, `align`, `section`, `notes`, `docs`
 
 | Frontmatter | Purpose |
@@ -71,7 +72,7 @@ Node 22.18+ / 23+ via built-in type stripping.
 | `align` | `start` (top), `center`, or `end`. Default `start` |
 | `section` | Small eyebrow label shown above the content |
 | `notes` | Speaker notes (not rendered on the slide) |
-| `docs` | URL, array of URLs, or `{label, href}` objects — renders a collapsible References list |
+| `docs` | URL, array of URLs, or `{label, href}` objects. Renders a collapsible References list |
 
 ### Backgrounds (`bg`)
 
@@ -98,9 +99,12 @@ Tailwind utilities (`bg-pink`, `text-slate`, etc.). Two muted neutrals,
 
 ## Components
 
-- `Bullets` — dash-marked list; pass `size="lg"` for a larger list
-- `Quote` — large italic pull quote with optional `cite` attribution
-- `Eyebrow` — small uppercase label above a heading
+- `Bullets`: dash-marked list; pass `size="lg"` for a larger list
+- `Quote`: large italic pull quote with optional `cite` attribution
+- `Eyebrow`: small uppercase label above a heading
+- `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
+- `TwoCol`: two-column grid; `ratio="2-1"` or `"1-2"` to weight a side
+- `Poll`: React island, a live show-of-hands tally. Needs a `client:*` directive
 
 The example slides demonstrate each one.
 
@@ -117,7 +121,16 @@ Reusing the fonts outside a Cogapp context is the reuser's responsibility.
 
 ## Stack
 
-Astro 6, MDX, Tailwind v4, Node 22+.
+Astro 7, MDX, Tailwind v4, Node 22+.
+
+Markdown is rendered by Sätteri, Astro 7's own processor. It applies GFM, so
+tables and strikethrough work without a remark plugin.
+
+React is available for interactive islands (`client:load` on a `.tsx`
+component). The `overrides` block in `package.json` pulls `@vitejs/plugin-react`
+up to v6, the Rolldown/Oxc build: `@astrojs/react` still asks for v5, which
+prints deprecation warnings on every Vite 8 build. Drop the override once Astro
+bumps its own dependency.
 
 `CLAUDE.md` holds a short guide for working on the deck with Claude Code (the
 authoring procedure, theme rules, and the things that are easy to get wrong).

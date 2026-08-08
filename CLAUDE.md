@@ -1,6 +1,6 @@
-# Cogapp slides — deck guide for Claude Code
+# Cogapp slides: deck guide for Claude Code
 
-An Astro 6 + MDX presentation deck, copied from the cogapp-slides-template seed.
+An Astro 7 + MDX presentation deck, copied from the cogapp-slides-template seed.
 See `README.md` for full docs and `CONTEXT.md` for the glossary. This file is
 the short list of things that are easy to get wrong.
 
@@ -10,15 +10,21 @@ the short list of things that are easy to get wrong.
 2. Add the slug to the list in `src/content/order.ts`, in the position you want.
 3. Frontmatter: `title` (required); optional `bg`, `align`, `section`, `notes`, `docs`.
 
-A slide file that is NOT listed in `order.ts` is silently excluded from the deck
-(no error). A slug listed with no matching file is a build error. `order.ts` is
+A slide file not listed in `order.ts` is excluded from the deck with no error. A slug listed with no matching file is a build error. `order.ts` is
 the single source of truth for sequence.
+
+A running dev server can miss a brand-new slide and report "Order references
+missing slide", or serve it half-rendered. The content collection is cached, and
+adding a file plus its `order.ts` entry is not a change it picks up. Stop the
+server, `rm -rf .astro node_modules/.vite`, and start it again.
 
 ## Theme rules
 
 - Use the palette tokens, never raw hex or Tailwind default colours (`gray-*`).
   Tokens: `cream`, `slate`, `white`, `grey`, `light-grey`, and pastels `pink`,
   `green`, `purple`, `blue`. They resolve as utilities (`bg-pink`, `text-slate`).
+  One exception: `Terminal` chrome is deliberately off-palette, so leave its hex
+  values alone.
 - `bg`: use `cream` / `slate` / `white` for content-heavy slides; the four
   pastels are accents for section dividers and sparse feature slides.
 - Slide text colour comes from the `bg` (set in `SlideLayout`). Inside a slide,
@@ -29,16 +35,20 @@ the single source of truth for sequence.
 
 ## Components (in `src/components/`)
 
-- `Bullets` — dash-marked list; `size="lg"` for a larger, sparser list. Prefer
+- `Bullets`: dash-marked list; `size="lg"` for a larger, sparser list. Prefer
   it over a raw markdown list when the list IS the slide's content.
-- `Quote` — large italic pull quote; optional `cite` attribution.
-- `Eyebrow` — small uppercase label above a heading.
+- `Quote`: large italic pull quote; optional `cite` attribution.
+- `Eyebrow`: small uppercase label above a heading.
+- `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
+- `TwoCol`: two-column grid; `ratio="2-1"` or `"1-2"` to weight a side.
+- `Poll`: React island (`.tsx`), a live show-of-hands tally. Needs a `client:*`
+  directive or it renders static. The only component that ships JavaScript.
 
 ## Don't break these
 
 - **`base` is the single rename pivot.** To rename/redeploy the deck, edit only
   `base` (and `site`) in `astro.config.mjs`. Fonts, home link, and slide links
-  all derive from it. Do NOT hardcode the base path anywhere, and do NOT change
+  all derive from it. Don't hardcode the base path anywhere, and don't change
   the `../fonts/` URLs in `global.css` to absolute paths (see docs/adr/0002).
 - **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
   redistribution rights, so it can be public (see docs/adr/0001). Reusing the
