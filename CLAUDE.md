@@ -53,6 +53,10 @@ server, `rm -rf .astro node_modules/.vite`, and start it again.
 - **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
   redistribution rights, so it can be public (see docs/adr/0001). Reusing the
   fonts outside a Cogapp context is the reuser's licensing responsibility.
+- **The `@vitejs/plugin-react` override in `package.json`** is temporary. It
+  forces v6 (the Rolldown/Oxc build) because `@astrojs/react` still asks for v5,
+  which warns on every build. Check whether it is still needed when upgrading
+  Astro or `@astrojs/react`, and drop it once their own dependency catches up.
 
 ## After changes
 
