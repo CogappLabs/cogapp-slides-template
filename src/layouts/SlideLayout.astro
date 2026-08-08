@@ -221,26 +221,73 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
       {next !== undefined && (
         <a href={slidePath(next)} aria-label="Next slide" rel="next" class="px-3 py-2 no-underline text-slate"><span aria-hidden="true">→</span></a>
       )}
+      <button
+        type="button"
+        data-fullscreen
+        aria-label="Enter fullscreen"
+        class="px-3 py-2 text-slate bg-transparent border-0 cursor-pointer leading-none"
+      >
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path data-icon-expand d="M5 1H1v4M9 1h4v4M5 13H1V9M9 13h4V9" />
+          <path data-icon-collapse class="hidden" d="M1 5h4V1M13 5H9V1M1 9h4v4M13 9H9v4" />
+        </svg>
+      </button>
     </nav>
 
     <script>
       import { navigate } from "astro:transitions/client";
 
+      // Bundled module scripts run once per browser load, not per ClientRouter
+      // swap, so these registrations can't stack (addEventListener also dedupes
+      // an identical listener). init() re-runs on every astro:page-load to
+      // re-sync the button, which the swap replaces with server HTML.
       const init = () => {
-        document.removeEventListener("keydown", onKey);
         document.addEventListener("keydown", onKey);
+        document.addEventListener("click", onClick);
+        document.addEventListener("fullscreenchange", syncFullscreen);
+        document.addEventListener("astro:before-preparation", onBeforePreparation);
+        syncFullscreen();
+      };
+
+      // The button is replaced on every navigation, so query it each time
+      // rather than holding a reference.
+      const syncFullscreen = () => {
+        const btn = document.querySelector("[data-fullscreen]");
+        if (!btn) return;
+        // The label names the action, so aria-pressed is left off: pairing a
+        // changing name with a pressed state reads as a contradiction.
+        const on = document.fullscreenElement !== null;
+        btn.setAttribute("aria-label", on ? "Exit fullscreen" : "Enter fullscreen");
+        btn.querySelector("[data-icon-expand]")?.classList.toggle("hidden", on);
+        btn.querySelector("[data-icon-collapse]")?.classList.toggle("hidden", !on);
+      };
+
+      // requestFullscreen rejects when the browser blocks it (no user gesture,
+      // or an iframe without allowfullscreen). Swallow it so the console stays
+      // clean; the icon state is driven by fullscreenchange either way.
+      const toggleFullscreen = () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      };
+
+      // Delegated so it keeps working after a swap replaces the nav.
+      const onClick = (e) => {
+        if (e.target.closest?.("[data-fullscreen]")) toggleFullscreen();
       };
 
       let pendingDirection = null;
       const setDirection = (dir) => {
         pendingDirection = dir;
       };
-      document.addEventListener("astro:before-preparation", (e) => {
+      const onBeforePreparation = (e) => {
         if (pendingDirection) {
           e.direction = pendingDirection;
           pendingDirection = null;
         }
-      });
+      };
 
       const onKey = (e) => {
         const nav = document.querySelector('nav[aria-label="Slide navigation"]');
@@ -277,12 +324,18 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         } else if (e.key === "End" && last) {
           setDirection("forward");
           navigate(`${base}/slide/${last}`);
+        } else if (
+          (e.key === "f" || e.key === "F") &&
+          !e.metaKey &&
+          !e.ctrlKey &&
+          !e.altKey
+        ) {
+          // Bare f only, so Cmd/Ctrl+F still opens the browser's find bar.
+          e.preventDefault();
+          toggleFullscreen();
         }
       };
 
-      document.addEventListener("astro:before-swap", () => {
-        document.removeEventListener("keydown", onKey);
-      });
       document.addEventListener("astro:page-load", init);
       if (document.readyState !== "loading") init();
 </script>
