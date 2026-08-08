@@ -1,0 +1,36 @@
+---
+title: Image
+section: Components
+bg: cream
+align: start
+notes: |
+  Images in `src/assets/` go through Astro's `<Image>`: it optimises them,
+  emits width and height to stop layout shift, and lazy-loads by default.
+  Pass `loading="eager"` when the image is the point of the slide.
+
+  Anything in `public/` is served as-is, so reach for that only when a file
+  must keep its exact name and path (a logo, a favicon, a download).
+docs:
+  - label: Astro images
+    href: https://docs.astro.build/en/guides/images/
+---
+
+import { Image } from "astro:assets";
+import example from "../../assets/example.jpg";
+import TwoCol from "../../components/TwoCol.astro";
+import Bullets from "../../components/Bullets.astro";
+
+## Image
+
+<TwoCol ratio="1-2">
+  <div>
+    <Bullets>
+    - Import from `src/assets/`, then pass it to `Image`.
+    - Astro emits width and height, so nothing jumps as it loads.
+    - Files in `public/` skip optimisation entirely.
+    </Bullets>
+  </div>
+  <div>
+    <Image src={example} alt="Overlapping circles and squares in the Cogapp palette" loading="eager" class="w-full h-auto rounded" />
+  </div>
+</TwoCol>
