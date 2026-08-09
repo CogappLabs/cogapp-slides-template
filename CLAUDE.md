@@ -27,8 +27,8 @@ any of them. If a slide is still reported missing, stop the server,
 - Use the palette tokens, never raw hex or Tailwind default colours (`gray-*`).
   Tokens: `cream`, `slate`, `white`, `grey`, `light-grey`, and pastels `pink`,
   `green`, `purple`, `blue`. They resolve as utilities (`bg-pink`, `text-slate`).
-  One exception: `Terminal` chrome is deliberately off-palette, so leave its hex
-  values alone.
+  One exception: the `terminal` code-fence chrome in `slide-content.css` is
+  deliberately off-palette, so leave its hex values alone.
 - `bg`: use `cream` / `slate` / `white` for content-heavy slides; the four
   pastels are accents for section dividers and sparse feature slides.
 - Slide text colour comes from the `bg` (set in `SlideLayout`). Inside a slide,
@@ -67,8 +67,6 @@ which the deck opens with `P`. It is served with the deck, so treat it as public
 
 - `Eyebrow`: the uppercase label the layout renders from `eyebrow`/`section`.
   Only needed directly for a second label inside a slide.
-- `Terminal`: dark terminal window with chrome; `text`, optional `title` and
-  `align`.
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
 - `Video`: 16:9 YouTube embed; takes an id or share URL, and a `title` that
   becomes the iframe's accessible name.

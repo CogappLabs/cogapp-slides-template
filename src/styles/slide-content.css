@@ -159,6 +159,64 @@
     outline-offset: 2px;
     border-radius: 2px;
   }
+
+  /* Inline code sits inside running text, so it takes the slide's colours. */
+  & :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: color-mix(in oklab, currentColor 10%, transparent);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
+
+  /* Fenced blocks are rendered by shiki, which sets its own colours inline.
+     Only size and spacing are ours: the default is far too small to read from
+     the back of a room. */
+  & pre {
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
+    line-height: 1.5;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.5rem;
+    margin: 0 0 1.5rem;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  & pre code {
+    font-family: var(--font-mono);
+  }
+
+  /* ```terminal renders as the Terminal component's window, so a slide can show
+     command output without importing anything. Astro tags it data-language. */
+  & pre[data-language="terminal"] {
+    background: #1e1e1e !important;
+    color: #d4d4d4 !important;
+    padding-top: 2.75rem;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+  /* The window chrome: a title bar and the three traffic lights. */
+  & pre[data-language="terminal"]::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2rem;
+    background: #2d2d2d;
+    border-bottom: 1px solid rgb(0 0 0 / 0.4);
+  }
+  & pre[data-language="terminal"]::after {
+    content: "";
+    position: absolute;
+    top: 0.7rem;
+    left: 0.85rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow: 1rem 0 #ffbd2e, 2rem 0 #27c93f;
+  }
+  & pre[data-language="terminal"] code {
+    color: #d4d4d4;
+  }
 }
 
 /* Laptop screens: keep slide on one viewport, no scroll */

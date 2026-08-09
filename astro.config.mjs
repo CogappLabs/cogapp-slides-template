@@ -35,6 +35,11 @@ export default defineConfig({
     shikiConfig: {
       theme: "github-dark",
       wrap: false,
+      // ```terminal is command output, not a language. Aliasing it to a real
+      // grammar keeps the language tag on the element, which slide-content.css
+      // styles as a terminal window. Without this shiki falls back to
+      // "plaintext" and the tag is lost.
+      langAlias: { terminal: "shellsession" },
     },
   },
 });

@@ -1,25 +1,29 @@
 ---
-title: Terminal
+title: Code and terminal
 section: Components
 bg: cream
 align: start
 notes: |
-  Terminal renders a dark window with macOS-style chrome for command output.
-  Pass the output as `text` and an optional `title` for the window label.
-  The colours are deliberately outside the brand palette, so a terminal looks
-  like a terminal on any background.
+  Fenced code blocks are highlighted by shiki and sized for the room by
+  `.prose-slide`. Tag a block `terminal` and it renders as a terminal window
+  instead, so command output needs no component and no import.
+
+  Alt-click anywhere to magnify that spot for the audience (Ctrl-click on
+  Linux). Click again, or press Escape, to go back.
 ---
 
-import Terminal from "@/components/Terminal.astro";
+## Code and terminal
 
-## Terminal
+```js
+const slides = slideOrder.length;
+console.log(`${slides} slides`);
+```
 
-<Terminal
-  title="claude"
-  text={`$ npm run build
+```terminal
+$ npm run build
 
-  8 page(s) built in 662ms
-  Complete!`}
-/>
+23 page(s) built in 903ms
+Complete!
+```
 
-Keep output to a few lines so it stays legible at presentation distance.
+Alt-click to magnify a spot; click again to reset.

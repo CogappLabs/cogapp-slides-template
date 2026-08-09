@@ -150,6 +150,11 @@ by `.prose-slide`, so a slide rarely needs any markup of its own:
 - a `>` blockquote is the pull quote; a final paragraph inside it is the attribution
 - the paragraph after the heading becomes the large lead line
 - a trailing paragraph is set back as a note
+- fenced code is syntax-highlighted by shiki and sized for the room. Tag a
+  block ` ```terminal ` and it renders as a terminal window instead
+
+Alt-click anywhere on a slide (Ctrl-click on Linux) magnifies that spot 2× for
+the audience. Click again, or press Escape, to reset.
 
 Components cover the things markdown has no syntax for. Import them through the
 `@/` alias, which points at `src/`:
@@ -161,7 +166,6 @@ import Video from "@/components/Video.astro";
 ## Components
 
 - `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
-- `Terminal`: dark terminal window with chrome; `text`, optional `title` and `align`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
 - `Byline`: Cogapp logo with the credit line from `deck.config.ts`
 - `Video`: 16:9 YouTube embed; takes an id or any share URL, plus a `title`
