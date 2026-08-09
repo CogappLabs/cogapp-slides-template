@@ -113,16 +113,6 @@
   }
   & strong { font-weight: 600; }
   /* Quote attribution line */
-  & .cite {
-    display: block;
-    font-family: var(--font-sans);
-    font-style: normal;
-    font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-    letter-spacing: 0.02em;
-    opacity: 0.85;
-    margin-top: 0.6rem;
-  }
-  & .cite::before { content: "– "; }
   /* A markdown blockquote whose last paragraph is the attribution: write the
      quote, leave a blank line, then the name. A one-paragraph quote is left
      alone, so an unattributed quote still reads as one. */
