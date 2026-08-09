@@ -13,6 +13,6 @@ const cls =
 
 {/* minmax(0,…) and min-w-0 stop wide children (code blocks, tables, long URLs)
     forcing a column past its share of the grid. */}
-<div class:list={["grid gap-6 md:gap-12 items-start [&>*]:w-full [&>*]:min-w-0 [&>*]:overflow-hidden", cls]}>
+<div class:list={["grid gap-6 md:gap-12 items-start mb-6 [&>*]:w-full [&>*]:min-w-0 [&>*]:overflow-hidden", cls]}>
   <slot />
 </div>
