@@ -18,17 +18,14 @@ docs:
 import { Image } from "astro:assets";
 import example from "../../assets/example.jpg";
 import TwoCol from "../../components/TwoCol.astro";
-import Bullets from "../../components/Bullets.astro";
 
 ## Image
 
 <TwoCol ratio="1-2">
   <div>
-    <Bullets>
     - Import from `src/assets/`, then pass it to `Image`.
     - Astro emits width and height, so nothing jumps as it loads.
     - Files in `public/` skip optimisation entirely.
-    </Bullets>
   </div>
   <div>
     <Image src={example} alt="Overlapping circles and squares in the Cogapp palette" loading="eager" class="w-full h-auto rounded" />

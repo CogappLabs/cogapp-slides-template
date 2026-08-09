@@ -1,0 +1,24 @@
+---
+interface Props {
+  /** Presenter, date, or whatever belongs beside the logo. */
+  credit?: string;
+}
+const { credit } = Astro.props;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+{/* The logo is a mask rather than an <img> so it takes the slide's text
+    colour, which flips with a dark `bg`. */}
+<div class="flex items-center gap-5 mt-14">
+  <span
+    aria-label="Cogapp"
+    role="img"
+    class="block w-[120px] h-7 bg-current"
+    style={`-webkit-mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;`}
+  ></span>
+  {credit && (
+    <span class="font-sans text-sm uppercase tracking-[0.12em] opacity-85 pl-5 border-l border-current/25">
+      {credit}
+    </span>
+  )}
+</div>

@@ -84,6 +84,32 @@
   src: url("../fonts/civil/CivilPremium-SemiBold2.woff2") format("woff2");
   font-display: optional;
 }
+/* Italics at the weights the deck can reach, so bold-inside-italic and the
+   like resolve to a real face rather than a synthesised slant. */
+@font-face {
+  font-family: Civil;
+  font-style: italic;
+  font-weight: 300;
+  font-feature-settings: "zero";
+  src: url("../fonts/civil/CivilPremium-LightItalic.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: italic;
+  font-weight: 500;
+  font-feature-settings: "zero";
+  src: url("../fonts/civil/CivilPremium-MediumItalic.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: italic;
+  font-weight: 600;
+  font-feature-settings: "zero";
+  src: url("../fonts/civil/CivilPremium-SemiBoldItalic.woff2") format("woff2");
+  font-display: optional;
+}
 
 /* Fallback metric adjuster for Civil */
 @font-face {
@@ -204,11 +230,47 @@
     margin: 0 0 1.15rem;
     max-width: 62ch;
   }
-  & ul:not(.bullets), & ol {
+  /* Lists are dash-marked, not disc. The rule is a pseudo-element so it takes
+     the slide's text colour and stays put when an item wraps. */
+  & ul, & ol {
     font-size: clamp(1.35rem, 1.9vw, 1.7rem);
-    padding-left: 2rem;
     margin: 0 0 1.5rem;
-    list-style: disc;
+  }
+  & ul {
+    list-style: none;
+    padding: 0;
+  }
+  & ul li {
+    position: relative;
+    padding-left: 2rem;
+  }
+  & ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  /* Numbered lists keep the browser's own numbering. */
+  & ol {
+    list-style: decimal;
+    padding-left: 2.5rem;
+  }
+  & ol li::marker {
+    color: currentColor;
+    opacity: 0.6;
+  }
+  & li {
+    margin-bottom: 1rem;
+    line-height: 1.35;
+  }
+  /* Nested lists inherit the same treatment without extra indent stacking. */
+  & li > ul, & li > ol {
+    margin: 0.75rem 0 0;
+    font-size: inherit;
   }
   & ol { list-style: decimal; }
   & li { margin-bottom: 0.5rem; line-height: 1.45; }
@@ -255,12 +317,21 @@
     margin-top: 0.6rem;
   }
   & .cite::before { content: "– "; }
-  /* Lead paragraph for statement slides: large, for Zoom legibility */
+  /* Lead paragraph for statement slides: large, for Zoom legibility.
+     The paragraph straight after the slide heading gets this automatically, so
+     plain markdown reads correctly without a class. Add `.lead` by hand only to
+     promote some other paragraph. */
+  & h1 + p,
+  & h2 + p,
   & .lead {
     font-size: clamp(1.9rem, 2.8vw, 2.6rem);
     line-height: 1.35;
     margin: 0 0 1.25rem;
     max-width: 46ch;
+  }
+  /* Trailing note after the slide's content sits back a little. */
+  & > p:last-child:not(:only-child):not(.lead) {
+    opacity: 0.8;
   }
   & a {
     color: inherit;
@@ -286,12 +357,13 @@
   .prose-slide h2 { font-size: clamp(2.1rem, 4.8vh, 3rem); margin: 0 0 1rem; }
   .prose-slide h3 { font-size: clamp(1.5rem, 3vh, 1.9rem); margin: 0 0 0.6rem; }
   .prose-slide p { font-size: clamp(1.35rem, 2.4vh, 1.6rem); margin: 0 0 0.7rem; }
-  .prose-slide ul:not(.bullets), .prose-slide ol {
+  .prose-slide ul, .prose-slide ol {
     font-size: clamp(1.35rem, 2.4vh, 1.6rem);
     margin: 0 0 0.9rem;
   }
+  .prose-slide h1 + p,
+  .prose-slide h2 + p,
   .prose-slide .lead { font-size: clamp(1.8rem, 3.6vh, 2.4rem); margin: 0 0 1rem; }
-  .prose-slide .bullets li { font-size: clamp(1.4rem, 2.5vh, 1.75rem); }
   .prose-slide li { margin-bottom: 0.35rem; }
   .prose-slide blockquote {
     font-size: clamp(1.7rem, 3.4vh, 2.2rem);
@@ -308,7 +380,6 @@
   }
 }
 
-/* Slide pages allow scrolling when content overflows */
-main[data-slide] {
-  overflow-y: auto;
-}
+/* An overflowing slide scrolls the document; `main` grows with its content and
+   never scrolls itself. Space and the scroll wheel work; the arrow keys are
+   taken by slide navigation. */

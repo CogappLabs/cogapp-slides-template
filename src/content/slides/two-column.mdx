@@ -16,40 +16,33 @@ notes: |
   of the slide; pass a URL, an array of URLs, or {label, href} objects.
 ---
 
-import Bullets from "../../components/Bullets.astro";
 import TwoCol from "../../components/TwoCol.astro";
 
 ## Two columns
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-4">
+<TwoCol>
   <div>
-    <h3>Left</h3>
-    <Bullets>
-    - An even split is a plain Tailwind grid.
+    ### Left
+
+    - An even split needs no ratio.
     - Stacks to one column on narrow screens.
-    </Bullets>
   </div>
   <div>
-    <h3>Right</h3>
-    <Bullets>
+    ### Right
+
     - Mix headings, bullets and prose freely.
     - Each column is just MDX.
-    </Bullets>
   </div>
-</div>
+</TwoCol>
 
-<h3 class="mt-10">Weighted: <code>TwoCol</code></h3>
+### Weighted
 
 <TwoCol ratio="2-1">
   <div>
-    <Bullets>
     - `ratio="2-1"` gives this side twice the width. `"1-2"` flips it.
     - Also stops wide content (code, tables) blowing out a column.
-    </Bullets>
   </div>
   <div>
-    <Bullets>
     - Narrower support column.
-    </Bullets>
   </div>
 </TwoCol>

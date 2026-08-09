@@ -8,14 +8,12 @@ notes: |
 ---
 
 import Eyebrow from "../../components/Eyebrow.astro";
+import Byline from "../../components/Byline.astro";
 
 <Eyebrow tracking="wide" mb={6}>Project · Client · Context</Eyebrow>
 
 # Deck title
 
-<p class="lead opacity-80 mt-2">A one-line subtitle that sets up what the deck covers.</p>
+A one-line subtitle that sets up what the deck covers.
 
-<div class="flex items-center gap-5 mt-14">
-  <span class="block w-[120px] h-7 bg-current" style={`-webkit-mask:url(${import.meta.env.BASE_URL.replace(/\/$/, "")}/cogapp-logo.svg) left center/contain no-repeat;mask:url(${import.meta.env.BASE_URL.replace(/\/$/, "")}/cogapp-logo.svg) left center/contain no-repeat;`}></span>
-  <span class="font-sans text-sm uppercase tracking-[0.12em] opacity-85 pl-5 border-l border-current/25">Presenter · Date</span>
-</div>
+<Byline credit="Presenter · Date" />
