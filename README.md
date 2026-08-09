@@ -93,7 +93,7 @@ the background names from `deck.config.ts`.)
 | :--- | :--- |
 | `title` | Slide title (used in `<title>` and the index) |
 | `bg` | Background theme (see below). Default `cream` |
-| `align` | `start` (top), `center`, or `end`. Default `start` |
+| `align` | `start` (top) or `center`. Default `start` |
 | `section` | Groups the slide in the index, and labels it above the content |
 | `eyebrow` | Label above the content only, when it should differ from `section` |
 | `notes` | Speaker notes. Shown in the presenter view, never on the slide |
@@ -131,9 +131,15 @@ so check it clears WCAG AA.
 ### Stylesheets
 
 `global.css` holds the `@theme` tokens and imports the rest: `fonts.css`
-(`@font-face`), `transitions.css` (slide animation), and `slide-content.css`
-(`.prose-slide`, the typography for MDX output). Everything outside
-`.prose-slide` is Tailwind utilities.
+(`@font-face`), `transitions.css` (slide animation), `slide-content.css`
+(`.prose-slide`, the typography for MDX output), and `layout-utilities.css`.
+Everything outside `.prose-slide` is Tailwind utilities.
+
+Two of those layout classes exist because Tailwind has no equivalent:
+
+- `stretch` gives an element the height left on the slide, so a tall image or
+  video shrinks to fit rather than pushing content off the bottom
+- `stack` layers children in one grid cell, centred on each other
 
 ## Writing a slide
 
@@ -155,7 +161,7 @@ import Video from "@/components/Video.astro";
 ## Components
 
 - `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
-- `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
+- `Terminal`: dark terminal window with chrome; `text`, optional `title` and `align`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
 - `Byline`: Cogapp logo with the credit line from `deck.config.ts`
 - `Video`: 16:9 YouTube embed; takes an id or any share URL, plus a `title`
