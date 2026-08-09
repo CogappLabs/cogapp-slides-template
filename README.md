@@ -97,13 +97,25 @@ All colours are `--color-*` tokens in `src/styles/global.css` and resolve as
 Tailwind utilities (`bg-pink`, `text-slate`, etc.). Two muted neutrals,
 `grey` and `light-grey`, round out the palette for secondary text and panels.
 
+## Writing a slide
+
+Slides are markdown. Headings, lists, tables, quotes, code and links are styled
+by `.prose-slide`, so a slide rarely needs any markup of its own:
+
+- `ul` gets dash markers, `ol` keeps numbers, nesting works
+- the paragraph after the heading becomes the large lead line
+- a trailing paragraph is set back as a note
+
+Components cover the things markdown has no syntax for.
+
 ## Components
 
-- `Bullets`: dash-marked list; pass `size="lg"` for a larger list
 - `Quote`: large italic pull quote with optional `cite` attribution
 - `Eyebrow`: small uppercase label above a heading
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
-- `TwoCol`: two-column grid; `ratio="2-1"` or `"1-2"` to weight a side
+- `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
+- `Byline`: Cogapp logo with an optional credit line, for a title slide
+- `References`: collapsible list rendered from the `docs` frontmatter
 - `Poll`: React island, a live show-of-hands tally. Needs a `client:*` directive
 
 The example slides demonstrate each one.
@@ -121,7 +133,8 @@ Reusing the fonts outside a Cogapp context is the reuser's responsibility.
 
 ## Stack
 
-Astro 7, MDX, Tailwind v4, Node 22+.
+Astro 7, MDX, Tailwind v4, Node 22.18+ (the PDF script runs as TypeScript
+directly, which needs that version's type stripping).
 
 Markdown is rendered by Sätteri, Astro 7's own processor. It applies GFM, so
 tables and strikethrough work without a remark plugin.

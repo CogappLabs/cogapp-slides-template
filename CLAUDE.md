@@ -33,14 +33,27 @@ server, `rm -rf .astro node_modules/.vite`, and start it again.
   (`h1`, `p`, `ul`, `blockquote`, `table`…). Everything else uses Tailwind
   utilities. Edit `.prose-slide` to change default slide typography.
 
+## Write slides in markdown
+
+Plain markdown covers most of a slide, so reach for a component only when
+markdown can't express the thing. `.prose-slide` already handles:
+
+- Lists: dash markers on `ul`, numbers on `ol`, nesting included.
+- The paragraph straight after the slide heading, styled as a large lead.
+- A trailing paragraph, set back slightly as a note.
+- Tables, blockquotes, code, and links.
+
+Adding `class="..."` to markup in a slide should be rare. If you find yourself
+repeating one, it belongs in `.prose-slide` or a component instead.
+
 ## Components (in `src/components/`)
 
-- `Bullets`: dash-marked list; `size="lg"` for a larger, sparser list. Prefer
-  it over a raw markdown list when the list IS the slide's content.
 - `Quote`: large italic pull quote; optional `cite` attribution.
 - `Eyebrow`: small uppercase label above a heading.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
-- `TwoCol`: two-column grid; `ratio="2-1"` or `"1-2"` to weight a side.
+- `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
+- `Byline`: Cogapp logo with an optional credit, for a title slide.
+- `References`: the collapsible list rendered from `docs` frontmatter.
 - `Poll`: React island (`.tsx`), a live show-of-hands tally. Needs a `client:*`
   directive or it renders static. The only component that ships JavaScript.
 
