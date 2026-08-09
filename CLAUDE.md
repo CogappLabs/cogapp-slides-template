@@ -79,6 +79,17 @@ Two layout classes exist for what Tailwind has no equivalent of: `stretch`
 (fill the height left on the slide, for an image or video) and `stack` (layer
 children in one grid cell). Everything else is a normal Tailwind utility.
 
+## Browser code
+
+`src/scripts/` holds everything that runs in the browser, one file per job:
+`deck.ts` (the deck window: keys, nav buttons, transition direction),
+`presenter.ts`, `sync.ts` (the BroadcastChannel between the two windows),
+`fullscreen.ts`, `zoom.ts`, `timer.ts` and `shortcuts.ts`. The layouts import
+one module each rather than carrying inline script.
+
+Add a key binding in `deck.ts`, then add it to the `shortcuts` list in
+`shortcuts.ts` so the `?` overlay stays true.
+
 ## Don't break these
 
 - **`base` is the single rename pivot.** To rename/redeploy the deck, edit only

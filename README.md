@@ -35,7 +35,8 @@ npm run dev      # localhost:4321
 
 Index at `/`. Individual slides at `/slide/<slug>` where slug is the mdx
 filename (e.g. `/slide/bullets`). Arrow keys / PageUp-Down navigate; Home/End
-jump to first/last; `F` toggles fullscreen; `P` opens the presenter view.
+jump to first/last; `F` toggles fullscreen; `P` opens the presenter view;
+`?` lists every shortcut.
 
 ## Presenter view
 
