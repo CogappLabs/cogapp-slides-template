@@ -45,6 +45,10 @@ for (let i = 0; i < slideOrder.length; i++) {
     content: `nav[aria-label="Slide navigation"],[role="progressbar"]{display:none!important}
               *{transition:none!important;animation:none!important}`,
   });
+  // A PDF reader can't open a <details>, so show the References inline.
+  await page.evaluate(() => {
+    for (const d of document.querySelectorAll("details")) d.open = true;
+  });
   // Wait for webfonts to settle.
   await page.evaluate(() => document.fonts.ready);
   const buf = await page.pdf({
