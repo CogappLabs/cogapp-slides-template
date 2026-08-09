@@ -22,10 +22,9 @@ Then, in the new repo:
 1. Set `base` in `astro.config.mjs` to `/<your-repo-name>` (and `site` to your
    org Pages URL). Everything else, including the font URLs, follows `base`
    automatically.
-2. Replace the example slides in `src/content/slides/` and the order in
-   `src/deck.config.ts`.
-3. Set the deck title, subtitle and credit line in `src/deck.config.ts`. The
-   title slide and the index both read from it.
+2. Edit `src/deck.config.ts`: the deck title and subtitle, the credit line on
+   the title slide, and `slideOrder`.
+3. Replace the example slides in `src/content/slides/`.
 
 ## Run
 
@@ -69,12 +68,25 @@ the real sources, so there's nothing to keep in sync. Needs Playwright's
 Chromium (`npx playwright install chromium`). Runs as TypeScript directly on
 Node 22.18+ / 23+ via built-in type stripping.
 
+## Configuring the deck
+
+`src/deck.config.ts` is the one file to edit:
+
+| Export | What it sets |
+| :--- | :--- |
+| `deck` | Title, subtitle, credit line on the title slide, `<title>` suffix |
+| `slideOrder` | The sequence, and which slides are in the deck at all |
+| `surfaces` | Which colours a slide may use as its `bg` |
+
+(`src/content.config.ts` is Astro's own file: the frontmatter schema. It reads
+the background names from `deck.config.ts`.)
+
 ## Slides
 
 - Content lives in `src/content/slides/<slug>.mdx`
-- Order is set in `src/deck.config.ts` (move a line to reorder). A slide file
-  not listed there is excluded with no warning; a slug listed with no file is a
-  build error.
+- Order is `slideOrder` in `src/deck.config.ts` (move a line to reorder). A
+  slide file not listed there is excluded with no warning; a slug listed with
+  no file is a build error.
 - Frontmatter: `title`, optional `bg`, `align`, `section`, `eyebrow`, `notes`, `docs`
 
 | Frontmatter | Purpose |
@@ -84,7 +96,7 @@ Node 22.18+ / 23+ via built-in type stripping.
 | `align` | `start` (top), `center`, or `end`. Default `start` |
 | `section` | Groups the slide in the index, and labels it above the content |
 | `eyebrow` | Label above the content only, when it should differ from `section` |
-| `notes` | Speaker notes (not rendered on the slide) |
+| `notes` | Speaker notes. Shown in the presenter view, never on the slide |
 | `docs` | URL, array of URLs, or `{label, href}` objects. Renders a collapsible References list |
 
 ### Backgrounds (`bg`)
@@ -109,6 +121,12 @@ contrast against slate text reads fine.
 All colours are `--color-*` tokens in `src/styles/global.css` and resolve as
 Tailwind utilities (`bg-pink`, `text-slate`, etc.). Two muted neutrals,
 `grey` and `light-grey`, round out the palette for secondary text and panels.
+
+Adding a background takes two steps: define `--color-<name>` in the `@theme`
+block, then pair it with its text colour in `surfaces` in `src/deck.config.ts`.
+That list is what makes the name valid in frontmatter, so the schema rejects a
+`bg` you haven't defined. Each pairing carries body text across a whole slide,
+so check it clears WCAG AA.
 
 ### Stylesheets
 
