@@ -53,13 +53,13 @@ export const slideOrder = [
 // a string built at runtime (`bg-${name}`) generates no CSS, and a typo that
 // isn't a real utility renders as no background rather than an error.
 export const surfaces = {
-  cream: { class: "bg-cream text-slate" },
-  slate: { class: "bg-slate text-cream" },
-  white: { class: "bg-white text-slate" },
-  pink: { class: "bg-pink text-slate" },
-  green: { class: "bg-green text-slate" },
-  purple: { class: "bg-purple text-slate" },
-  blue: { class: "bg-blue text-slate" },
+  cream: "bg-cream text-slate",
+  slate: "bg-slate text-cream",
+  white: "bg-white text-slate",
+  pink: "bg-pink text-slate",
+  green: "bg-green text-slate",
+  purple: "bg-purple text-slate",
+  blue: "bg-blue text-slate",
 } as const;
 
 export type Surface = keyof typeof surfaces;

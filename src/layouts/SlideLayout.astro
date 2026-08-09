@@ -39,7 +39,7 @@ const slideAnim = {
 interface Props {
   slug: string;
   bg?: Surface;
-  align?: "start" | "center" | "end";
+  align?: "start" | "center";
   title: string;
   order: number;
   total: number;
@@ -88,13 +88,7 @@ const {
 const docLinks = normaliseDocs(docs);
 const label = eyebrow ?? section;
 
-const bgClass = surfaces[bg].class;
-
-const alignClass: Record<string, string> = {
-  start: "justify-start",
-  center: "justify-center",
-  end: "justify-end",
-};
+const bgClass = surfaces[bg];
 
 const progressPct = total > 1 ? ((order - 1) / (total - 1)) * 100 : 100;
 
@@ -371,7 +365,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
           toggleFullscreen();
         } else if (e.key === "p" || e.key === "P") {
           e.preventDefault();
-          window.open(`${base}/presenter/${currentSlug()}`, "deck-presenter", "width=720,height=800");
+          openPresenter();
         }
       };
 
