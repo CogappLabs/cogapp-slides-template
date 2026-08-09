@@ -24,7 +24,7 @@ Then, in the new repo:
    automatically.
 2. Replace the example slides in `src/content/slides/` and the order in
    `src/content/order.ts`.
-3. Update the deck title and intro copy in `src/pages/index.astro`.
+3. Set the deck title and subtitle in `src/content/deck.ts`.
 
 ## Run
 
@@ -104,6 +104,7 @@ Slides are markdown. Headings, lists, tables, quotes, code and links are styled
 by `.prose-slide`, so a slide rarely needs any markup of its own:
 
 - `ul` gets dash markers, `ol` keeps numbers, nesting works
+- a `>` blockquote is the pull quote; a final paragraph inside it is the attribution
 - the paragraph after the heading becomes the large lead line
 - a trailing paragraph is set back as a note
 
@@ -111,7 +112,6 @@ Components cover the things markdown has no syntax for.
 
 ## Components
 
-- `Quote`: large italic pull quote with optional `cite` attribution
 - `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side

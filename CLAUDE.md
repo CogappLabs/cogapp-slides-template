@@ -42,14 +42,18 @@ markdown can't express the thing. `.prose-slide` already handles:
 - Lists: dash markers on `ul`, numbers on `ol`, nesting included.
 - The paragraph straight after the slide heading, styled as a large lead.
 - A trailing paragraph, set back slightly as a note.
-- Tables, blockquotes, code, and links.
+- Tables, code and links.
+- Blockquotes as pull quotes. A final paragraph inside the quote, after a blank
+  line, becomes the attribution.
 
 Adding `class="..."` to markup in a slide should be rare. If you find yourself
 repeating one, it belongs in `.prose-slide` or a component instead.
 
+The deck's own title and subtitle live in `src/content/deck.ts`, not in the
+markup of `src/pages/index.astro`.
+
 ## Components (in `src/components/`)
 
-- `Quote`: large italic pull quote; optional `cite` attribution.
 - `Eyebrow`: the uppercase label the layout renders from `eyebrow`/`section`.
   Only needed directly for a second label inside a slide.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.

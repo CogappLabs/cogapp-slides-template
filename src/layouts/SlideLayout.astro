@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import References from "../components/References.astro";
 import Eyebrow from "../components/Eyebrow.astro";
+import { deck } from "../content/deck";
 
 const slideAnim = {
   forwards: {
@@ -114,7 +115,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>{title} · Cogapp</title>
+    <title>{title} · {deck.suffix}</title>
     <link rel="icon" type="image/png" href={`${BASE}/favicon.png`} />
     <link rel="preload" href={`${BASE}/fonts/untitled-serif/untitled-serif-regular.woff2`} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={`${BASE}/fonts/civil/CivilPremium-Regular2.woff2`} as="font" type="font/woff2" crossorigin />

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { slideOrder } from "../content/order";
+import { deck } from "../content/deck";
 
 const all = await getCollection("slides");
 const bySlug = new Map(all.map((s) => [s.id, s]));
@@ -20,7 +21,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Deck title · Cogapp</title>
+    <title>{deck.title} · {deck.suffix}</title>
     <link rel="icon" type="image/png" href={`${BASE}/favicon.png`} />
     {/* The index is the usual entry point, and `font-display: optional` gives a
         face one shot to arrive. ClientRouter keeps the document alive for the
@@ -41,10 +42,10 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
     <main class="max-w-[1100px] mx-auto px-12 min-h-screen flex flex-col justify-center py-[clamp(1.5rem,6vh,5rem)]">
       <header class="mb-[clamp(1.5rem,5vh,4rem)] shrink-0">
         <p class="font-sans font-medium text-sm uppercase tracking-[0.1em] opacity-85 mb-2">
-          Subtitle · Context line
+          {deck.subtitle}
         </p>
         <h1 class="font-serif text-[clamp(2.5rem,7vh,5.5rem)] leading-[1.02] tracking-tight mb-[clamp(1rem,3vh,2rem)]">
-          Deck title
+          {deck.title}
         </h1>
         <a
           href={`${BASE}/slide/${slideOrder[0]}`}
