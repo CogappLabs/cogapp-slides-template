@@ -15,10 +15,12 @@ A slide file missing from `slideOrder` is excluded from the deck with no error;
 a slug there with no matching file is a build error. It is the single source of
 truth for sequence.
 
-A running dev server can miss a brand-new slide and report "Order references
-missing slide", or serve it half-rendered. The content collection is cached, and
-adding a file plus its `slideOrder` entry is not a change it picks up. Stop the
-server, `rm -rf .astro node_modules/.vite`, and start it again.
+Astro caches the content collection, so a running dev server would otherwise
+report a new slug as missing until restarted. `vite-plugin-restart` in
+`astro.config.mjs` restarts the server on changes to `deck.config.ts`,
+`content.config.ts` and the slide files; keep those globs in step if you move
+any of them. If a slide is still reported missing, stop the server,
+`rm -rf .astro node_modules/.vite`, and start it again.
 
 ## Theme rules
 

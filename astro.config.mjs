@@ -19,9 +19,13 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      // Astro caches the content collection, so adding or renaming a slide is
+      // not something the dev server picks up on its own: it reports the slug
+      // as missing until restarted. Restarting on these paths avoids that.
       restart({
         restart: [
-          "src/content/order.ts",
+          "src/deck.config.ts",
+          "src/content.config.ts",
           "src/content/slides/**/*.mdx",
         ],
       }),
