@@ -52,6 +52,9 @@ repeating one, it belongs in `.prose-slide` or a component instead.
 The deck's title, subtitle and credit line live in `src/content/deck.ts`. The
 title slide and the index read from it, so change it in one place.
 
+`notes` frontmatter is the script for the presenter view at `/presenter/<slug>`,
+which the deck opens with `P`. It is served with the deck, so treat it as public.
+
 ## Components (in `src/components/`)
 
 - `Eyebrow`: the uppercase label the layout renders from `eyebrow`/`section`.

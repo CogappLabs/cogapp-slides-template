@@ -1,0 +1,196 @@
+---
+import { getCollection } from "astro:content";
+import "../../styles/global.css";
+import { slideOrder } from "../../content/order";
+import { deck } from "../../content/deck";
+
+export async function getStaticPaths() {
+  const all = await getCollection("slides");
+  const bySlug = new Map(all.map((s) => [s.id, s]));
+  const total = slideOrder.length;
+  return slideOrder.map((slug, i) => {
+    const slide = bySlug.get(slug);
+    if (!slide) {
+      throw new Error(
+        `Slide order references "${slug}" but no matching mdx file in src/content/slides/`,
+      );
+    }
+    const nextSlug = i < total - 1 ? slideOrder[i + 1] : undefined;
+    return {
+      params: { slug },
+      props: {
+        title: slide.data.title,
+        notes: slide.data.notes,
+        order: i + 1,
+        total,
+        prev: i > 0 ? slideOrder[i - 1] : undefined,
+        next: nextSlug,
+        nextTitle: nextSlug ? bySlug.get(nextSlug)?.data.title : undefined,
+      },
+    };
+  });
+}
+
+const { title, notes, order, total, prev, next, nextTitle } = Astro.props;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Presenter · {title} · {deck.suffix}</title>
+    <link rel="icon" type="image/png" href={`${BASE}/favicon.png`} />
+  </head>
+  <body
+    class="bg-slate text-cream m-0 min-h-screen font-sans"
+    data-presenter
+    data-slug={Astro.params.slug}
+    data-prev={prev}
+    data-next={next}
+    data-base={BASE}
+  >
+    <main class="max-w-[900px] mx-auto px-8 py-8 flex flex-col gap-8 min-h-screen">
+      <header class="flex items-center justify-between gap-6 border-b border-cream/20 pb-4">
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-2xl tabular-nums" data-timer aria-live="off">00:00</span>
+          <button
+            type="button"
+            data-timer-toggle
+            class="font-sans text-xs uppercase tracking-[0.1em] px-3 py-1.5 border border-cream/30 rounded bg-transparent text-cream cursor-pointer"
+          >Pause</button>
+          <button
+            type="button"
+            data-timer-reset
+            class="font-sans text-xs uppercase tracking-[0.1em] px-3 py-1.5 border border-cream/30 rounded bg-transparent text-cream cursor-pointer"
+          >Reset</button>
+        </div>
+        <span class="font-mono text-lg tabular-nums opacity-80">{order} / {total}</span>
+      </header>
+
+      <section>
+        <h1 class="font-serif text-3xl leading-tight m-0 mb-6">{title}</h1>
+        <h2 class="font-sans text-xs uppercase tracking-[0.16em] opacity-60 m-0 mb-3">Notes</h2>
+        {notes ? (
+          <p class="text-lg leading-relaxed whitespace-pre-line m-0 max-w-none">{notes}</p>
+        ) : (
+          <p class="text-lg opacity-50 m-0">No notes for this slide.</p>
+        )}
+      </section>
+
+      <section class="mt-auto border-t border-cream/20 pt-4">
+        <h2 class="font-sans text-xs uppercase tracking-[0.16em] opacity-60 m-0 mb-2">Next</h2>
+        <p class="text-lg m-0 opacity-90">{nextTitle ?? "End of deck"}</p>
+      </section>
+
+      <nav aria-label="Presenter navigation" class="flex gap-3">
+        {prev && (
+          <a href={`${BASE}/presenter/${prev}`} rel="prev" class="px-4 py-2 border border-cream/30 rounded no-underline text-cream">← Previous</a>
+        )}
+        {next && (
+          <a href={`${BASE}/presenter/${next}`} rel="next" class="px-4 py-2 border border-cream/30 rounded no-underline text-cream">Next →</a>
+        )}
+      </nav>
+    </main>
+
+    <script>
+      const body = document.body;
+      const BASE = body.dataset.base || "";
+      const slug = body.dataset.slug!;
+      const prev = body.dataset.prev;
+      const next = body.dataset.next;
+
+      // Same-origin, same-browser only. A viewer on another machine gets a
+      // standalone read-only view, which is harmless: it just doesn't follow.
+      const channel = "BroadcastChannel" in window ? new BroadcastChannel("deck") : null;
+      // Ignore our own messages, so two presenter tabs can't ping-pong.
+      const me = Math.random().toString(36).slice(2);
+
+      const go = (target?: string) => {
+        if (!target) return;
+        channel?.postMessage({ from: me, slug: target });
+        location.href = `${BASE}/presenter/${target}`;
+      };
+
+      channel?.addEventListener("message", (e) => {
+        const d = e.data;
+        if (!d || d.from === me || !d.slug || d.slug === slug) return;
+        location.href = `${BASE}/presenter/${d.slug}`;
+      });
+
+      // Announce where we are, so a deck window opened later can catch up.
+      channel?.postMessage({ from: me, slug });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") {
+          e.preventDefault();
+          go(next);
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") {
+          e.preventDefault();
+          go(prev);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const link = (e.target as HTMLElement).closest?.('nav a[rel="prev"], nav a[rel="next"]');
+        if (!(link instanceof HTMLAnchorElement)) return;
+        e.preventDefault();
+        go(link.rel === "prev" ? prev : next);
+      });
+
+      // Timer state lives in sessionStorage so it survives moving between
+      // presenter pages: `elapsed` is banked time, `since` is when the current
+      // running stretch began (null while paused).
+      const KEY = "deck-timer";
+      type TimerState = { elapsed: number; since: number | null };
+
+      const read = (): TimerState => {
+        try {
+          const raw = sessionStorage.getItem(KEY);
+          if (raw) return JSON.parse(raw) as TimerState;
+        } catch {}
+        return { elapsed: 0, since: Date.now() };
+      };
+      const write = (s: TimerState) => sessionStorage.setItem(KEY, JSON.stringify(s));
+
+      let state = read();
+      write(state);
+
+      const total = (s: TimerState) =>
+        s.elapsed + (s.since === null ? 0 : Date.now() - s.since);
+
+      const timer = document.querySelector("[data-timer]")!;
+      const toggle = document.querySelector("[data-timer-toggle]")!;
+
+      const render = () => {
+        const secs = Math.floor(total(state) / 1000);
+        const mm = String(Math.floor(secs / 60)).padStart(2, "0");
+        const ss = String(secs % 60).padStart(2, "0");
+        timer.textContent = `${mm}:${ss}`;
+        timer.classList.toggle("opacity-50", state.since === null);
+        toggle.textContent = state.since === null ? "Resume" : "Pause";
+      };
+
+      toggle.addEventListener("click", () => {
+        state =
+          state.since === null
+            ? { elapsed: state.elapsed, since: Date.now() }
+            : { elapsed: total(state), since: null };
+        write(state);
+        render();
+      });
+
+      document.querySelector("[data-timer-reset]")!.addEventListener("click", () => {
+        state = { elapsed: 0, since: state.since === null ? null : Date.now() };
+        write(state);
+        render();
+      });
+
+      render();
+      setInterval(render, 1000);
+    </script>
+  </body>
+</html>

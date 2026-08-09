@@ -36,7 +36,18 @@ npm run dev      # localhost:4321
 
 Index at `/`. Individual slides at `/slide/<slug>` where slug is the mdx
 filename (e.g. `/slide/bullets`). Arrow keys / PageUp-Down navigate; Home/End
-jump to first/last.
+jump to first/last; `F` toggles fullscreen; `P` opens the presenter view.
+
+## Presenter view
+
+`P`, or the monitor button in the slide nav, opens `/presenter/<slug>` in a
+second window: speaker notes, a timer with pause and reset, the slide count,
+and the next slide's title. Moving in either window moves the other.
+
+Sync uses `BroadcastChannel`, which reaches other tabs in the same browser
+only. Someone opening a presenter URL on another machine gets a standalone
+view that doesn't follow along. Note that notes are published with the deck,
+so anyone with the URL can read them.
 
 ## Build
 
