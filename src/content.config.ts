@@ -9,7 +9,10 @@ const slides = defineCollection({
       .enum(["cream", "slate", "pink", "green", "purple", "blue", "white"])
       .default("cream"),
     align: z.enum(["start", "center", "end"]).default("start"),
+    /** Small uppercase label above the heading. `section` also names the slide
+        in the index; `eyebrow` is label-only and wins when both are set. */
     section: z.string().optional(),
+    eyebrow: z.string().optional(),
     notes: z.string().optional(),
     docs: z
       .union([

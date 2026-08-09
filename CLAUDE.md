@@ -8,7 +8,8 @@ the short list of things that are easy to get wrong.
 
 1. Create `src/content/slides/<slug>.mdx`. The slug is the filename minus `.mdx`.
 2. Add the slug to the list in `src/content/order.ts`, in the position you want.
-3. Frontmatter: `title` (required); optional `bg`, `align`, `section`, `notes`, `docs`.
+3. Frontmatter: `title` (required); optional `bg`, `align`, `section`, `eyebrow`,
+   `notes`, `docs`.
 
 A slide file not listed in `order.ts` is excluded from the deck with no error. A slug listed with no matching file is a build error. `order.ts` is
 the single source of truth for sequence.
@@ -49,7 +50,8 @@ repeating one, it belongs in `.prose-slide` or a component instead.
 ## Components (in `src/components/`)
 
 - `Quote`: large italic pull quote; optional `cite` attribution.
-- `Eyebrow`: small uppercase label above a heading.
+- `Eyebrow`: the uppercase label the layout renders from `eyebrow`/`section`.
+  Only needed directly for a second label inside a slide.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
 - `Byline`: Cogapp logo with an optional credit, for a title slide.

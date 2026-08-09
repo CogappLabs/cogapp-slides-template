@@ -63,14 +63,15 @@ Node 22.18+ / 23+ via built-in type stripping.
 - Order is set in `src/content/order.ts` (move a line to reorder). A slide file
   not listed there is excluded with no warning; a slug listed with no file is a
   build error.
-- Frontmatter: `title`, optional `bg`, `align`, `section`, `notes`, `docs`
+- Frontmatter: `title`, optional `bg`, `align`, `section`, `eyebrow`, `notes`, `docs`
 
 | Frontmatter | Purpose |
 | :--- | :--- |
 | `title` | Slide title (used in `<title>` and the index) |
 | `bg` | Background theme (see below). Default `cream` |
 | `align` | `start` (top), `center`, or `end`. Default `start` |
-| `section` | Small eyebrow label shown above the content |
+| `section` | Groups the slide in the index, and labels it above the content |
+| `eyebrow` | Label above the content only, when it should differ from `section` |
 | `notes` | Speaker notes (not rendered on the slide) |
 | `docs` | URL, array of URLs, or `{label, href}` objects. Renders a collapsible References list |
 
@@ -111,7 +112,7 @@ Components cover the things markdown has no syntax for.
 ## Components
 
 - `Quote`: large italic pull quote with optional `cite` attribution
-- `Eyebrow`: small uppercase label above a heading
+- `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
 - `Byline`: Cogapp logo with an optional credit line, for a title slide
