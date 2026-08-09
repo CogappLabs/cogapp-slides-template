@@ -1,0 +1,32 @@
+---
+interface Props {
+  /** YouTube video id, or any watch/share/embed URL to pull it from. */
+  id: string;
+  /** Used as the iframe's accessible name, so say what the video is. */
+  title: string;
+  /** Seconds to start at. */
+  start?: number;
+}
+const { id, title, start } = Astro.props;
+
+// Accepts a bare id or any of the URL shapes you get from the share button.
+const videoId =
+  id.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([\w-]{11})/)?.[1] ?? id;
+
+// nocookie defers YouTube's tracking cookies until playback, and `rel=0` keeps
+// the end screen to this channel rather than suggesting unrelated videos.
+const params = new URLSearchParams({ rel: "0" });
+if (start) params.set("start", String(start));
+const src = `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
+---
+
+<div class="aspect-video w-full overflow-hidden rounded bg-slate">
+  <iframe
+    src={src}
+    title={title}
+    class="w-full h-full border-0"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>

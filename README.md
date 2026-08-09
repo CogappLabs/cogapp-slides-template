@@ -145,7 +145,12 @@ by `.prose-slide`, so a slide rarely needs any markup of its own:
 - the paragraph after the heading becomes the large lead line
 - a trailing paragraph is set back as a note
 
-Components cover the things markdown has no syntax for.
+Components cover the things markdown has no syntax for. Import them through the
+`@/` alias, which points at `src/`:
+
+```mdx
+import Video from "@/components/Video.astro";
+```
 
 ## Components
 
@@ -153,6 +158,7 @@ Components cover the things markdown has no syntax for.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
 - `Byline`: Cogapp logo with the credit line from `deck.config.ts`
+- `Video`: 16:9 YouTube embed; takes an id or any share URL, plus a `title`
 - `References`: collapsible list rendered from the `docs` frontmatter
 - `Poll`: React island, a live show-of-hands tally. Needs a `client:*` directive
 

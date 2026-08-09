@@ -29,6 +29,7 @@ export const slideOrder = [
   "image",
   "terminal",
   "react-island",
+  "video",
   "closing",
 ] as const;
 
