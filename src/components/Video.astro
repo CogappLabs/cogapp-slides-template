@@ -20,7 +20,10 @@ if (start) params.set("start", String(start));
 const src = `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
 ---
 
-<div class="aspect-video w-full overflow-hidden rounded bg-slate">
+{/* The cap is on width, not height: `aspect-video` derives height from width,
+    so capping the height would crop the frame instead of shrinking it. 58vh of
+    height is 103vh of width at 16:9, hence the calc. */}
+<div class="aspect-video w-full max-w-[calc(58vh*16/9)] mx-auto overflow-hidden rounded bg-slate">
   <iframe
     src={src}
     title={title}
