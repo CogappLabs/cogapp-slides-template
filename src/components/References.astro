@@ -1,0 +1,22 @@
+---
+export type DocLink = { label: string; href: string };
+interface Props {
+  links: DocLink[];
+}
+const { links } = Astro.props;
+---
+
+{links.length > 0 && (
+  <details class="mt-12 pt-6 border-t border-current/20 text-xs group">
+    <summary class="font-sans text-[0.65rem] uppercase tracking-[0.1em] opacity-80 cursor-pointer list-none select-none hover:opacity-100 [&::-webkit-details-marker]:hidden">
+      References <span>({links.length})</span> <span class="inline-block transition-transform group-open:rotate-90">›</span>
+    </summary>
+    <ul class="list-none p-0 mt-4 mb-0 space-y-1.5">
+      {links.map((d) => (
+        <li class="pl-0 before:hidden">
+          <a href={d.href} target="_blank" rel="noopener noreferrer" class="font-mono text-current opacity-80 hover:opacity-100">{d.label} <span class="sr-only">(opens in new tab)</span></a>
+        </li>
+      ))}
+    </ul>
+  </details>
+)}

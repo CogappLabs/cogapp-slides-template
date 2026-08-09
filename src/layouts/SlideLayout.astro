@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
-import { ClientRouter, fade } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
+import References from "../components/References.astro";
 
 const slideAnim = {
   forwards: {
@@ -67,7 +68,7 @@ function normaliseDocs(
 }
 const {
   bg = "cream",
-  align = "center",
+  align = "start",
   title,
   order,
   total,
@@ -145,10 +146,11 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
     {align === "center" ? (
       <main
         data-slide
+        aria-labelledby="slide-title"
         class="min-h-screen px-12 max-w-[1100px] w-full mx-auto flex flex-col justify-center items-start"
         transition:animate={slideAnim}
       >
-        <h1 class="sr-only">{title}</h1>
+        <p class="sr-only" id="slide-title">{title}</p>
         {section && (
           <span class="block font-sans text-sm font-medium uppercase tracking-[0.1em] text-current opacity-85 mb-4">
             {section}
@@ -156,30 +158,18 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         )}
         <div class="prose-slide w-full">
           <slot />
-          {docLinks.length > 0 && (
-            <details class="mt-12 pt-6 border-t border-current/20 text-xs group">
-              <summary class="font-sans text-[0.65rem] uppercase tracking-[0.1em] opacity-60 cursor-pointer list-none select-none hover:opacity-100 [&::-webkit-details-marker]:hidden">
-                References <span class="opacity-60">({docLinks.length})</span> <span class="inline-block transition-transform group-open:rotate-90">›</span>
-              </summary>
-              <ul class="list-none p-0 mt-4 mb-0 space-y-1.5">
-                {docLinks.map((d) => (
-                  <li>
-                    <a href={d.href} target="_blank" rel="noopener noreferrer" class="font-mono text-current opacity-80 hover:opacity-100">{d.label} <span class="sr-only">(opens in new tab)</span></a>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
+          <References links={docLinks} />
         </div>
       </main>
     ) : (
       <main
         data-slide
+        aria-labelledby="slide-title"
         class="min-h-screen px-12 max-w-[1100px] w-full mx-auto grid"
         style="grid-template-rows:18vh auto 1fr"
         transition:animate={slideAnim}
       >
-        <h1 class="sr-only">{title}</h1>
+        <p class="sr-only" id="slide-title">{title}</p>
         <div></div>
         <header>
           {section && (
@@ -190,20 +180,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         </header>
         <div class="prose-slide self-start">
           <slot />
-          {docLinks.length > 0 && (
-            <details class="mt-12 pt-6 border-t border-current/20 text-xs group">
-              <summary class="font-sans text-[0.65rem] uppercase tracking-[0.1em] opacity-60 cursor-pointer list-none select-none hover:opacity-100 [&::-webkit-details-marker]:hidden">
-                References <span class="opacity-60">({docLinks.length})</span> <span class="inline-block transition-transform group-open:rotate-90">›</span>
-              </summary>
-              <ul class="list-none p-0 mt-4 mb-0 space-y-1.5">
-                {docLinks.map((d) => (
-                  <li>
-                    <a href={d.href} target="_blank" rel="noopener noreferrer" class="font-mono text-current opacity-80 hover:opacity-100">{d.label} <span class="sr-only">(opens in new tab)</span></a>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
+          <References links={docLinks} />
         </div>
       </main>
     )}
@@ -216,7 +193,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         <a href={slidePath(prev)} aria-label="Previous slide" rel="prev" class="px-3 py-2 no-underline text-slate"><span aria-hidden="true">←</span></a>
       )}
       <span class="text-slate/70 px-1" aria-label={`Slide ${order} of ${total}`}>
-        <span aria-hidden="true" data-counter>{order}</span><span aria-hidden="true"> / </span><span aria-hidden="true">{total}</span>
+        <span aria-hidden="true">{order}</span><span aria-hidden="true"> / </span><span aria-hidden="true">{total}</span>
       </span>
       {next !== undefined && (
         <a href={slidePath(next)} aria-label="Next slide" rel="next" class="px-3 py-2 no-underline text-slate"><span aria-hidden="true">→</span></a>
@@ -243,7 +220,9 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
       // re-sync the button, which the swap replaces with server HTML.
       const init = () => {
         document.addEventListener("keydown", onKey);
-        document.addEventListener("click", onClick);
+        // Capture phase: ClientRouter intercepts link clicks before they bubble,
+        // so a bubble-phase listener would set the direction too late.
+        document.addEventListener("click", onClick, true);
         document.addEventListener("fullscreenchange", syncFullscreen);
         document.addEventListener("astro:before-preparation", onBeforePreparation);
         syncFullscreen();
@@ -275,7 +254,14 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
 
       // Delegated so it keeps working after a swap replaces the nav.
       const onClick = (e) => {
-        if (e.target.closest?.("[data-fullscreen]")) toggleFullscreen();
+        if (e.target.closest?.("[data-fullscreen]")) {
+          toggleFullscreen();
+          return;
+        }
+        // ClientRouter handles the navigation itself, but it has no idea which
+        // way we are going, so the arrows would always animate forwards.
+        const link = e.target.closest?.('nav a[rel="prev"], nav a[rel="next"]');
+        if (link) setDirection(link.rel === "prev" ? "back" : "forward");
       };
 
       let pendingDirection = null;
@@ -292,6 +278,12 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
       const onKey = (e) => {
         const nav = document.querySelector('nav[aria-label="Slide navigation"]');
         if (!nav) return;
+        // Leave every modifier combination to the browser, so Alt+Left still
+        // goes back and Cmd/Ctrl+F still opens the find bar.
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        // Typing in an island's input should not drive the deck.
+        const el = e.target;
+        if (el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
         const prevLink = nav.querySelector('a[rel="prev"]');
         const nextLink = nav.querySelector('a[rel="next"]');
         const first = document.documentElement.dataset.slideFirst;
@@ -319,18 +311,17 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
             navigate(prevLink.getAttribute("href"));
           }
         } else if (e.key === "Home" && first) {
+          // prevLink is absent on the first slide, so this is already there.
+          if (!prevLink) return;
+          e.preventDefault();
           setDirection("back");
           navigate(`${base}/slide/${first}`);
         } else if (e.key === "End" && last) {
+          if (!nextLink) return;
+          e.preventDefault();
           setDirection("forward");
           navigate(`${base}/slide/${last}`);
-        } else if (
-          (e.key === "f" || e.key === "F") &&
-          !e.metaKey &&
-          !e.ctrlKey &&
-          !e.altKey
-        ) {
-          // Bare f only, so Cmd/Ctrl+F still opens the browser's find bar.
+        } else if (e.key === "f" || e.key === "F") {
           e.preventDefault();
           toggleFullscreen();
         }

@@ -22,10 +22,17 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
     <meta name="robots" content="noindex, nofollow" />
     <title>Deck title · Cogapp</title>
     <link rel="icon" type="image/png" href={`${BASE}/favicon.png`} />
+    {/* The index is the usual entry point, and `font-display: optional` gives a
+        face one shot to arrive. ClientRouter keeps the document alive for the
+        whole deck, so missing here means fallback fonts all session. */}
+    <link rel="preload" href={`${BASE}/fonts/untitled-serif/untitled-serif-regular.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${BASE}/fonts/civil/CivilPremium-Regular2.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${BASE}/fonts/civil/CivilPremium-Medium2.woff2`} as="font" type="font/woff2" crossorigin />
     <ClientRouter />
   </head>
   <body class="bg-cream text-slate m-0">
     <span
+      role="img"
       aria-label="Cogapp"
       class="fixed top-5 left-6 block w-[95px] h-[20px] bg-current opacity-70 z-50"
       style={`-webkit-mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;mask:url(${BASE}/cogapp-logo.svg) left center/contain no-repeat;`}
@@ -55,12 +62,12 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
               href={`${BASE}/slide/${s.id}`}
               class="grid grid-cols-[2.5em_1fr_auto] gap-4 items-baseline py-[clamp(0.25rem,0.9vh,0.6rem)] text-slate no-underline border-b border-slate/10 transition-colors hover:bg-purple"
             >
-              <span class="font-mono text-xs opacity-50 tabular-nums">
+              <span class="font-mono text-xs opacity-75 tabular-nums">
                 {String(s.order).padStart(2, "0")}
               </span>
               <span class="font-serif text-lg leading-tight">{s.data.title}</span>
               {s.data.section && (
-                <span class="font-sans text-xs uppercase tracking-[0.08em] opacity-50">
+                <span class="font-sans text-xs uppercase tracking-[0.08em] opacity-75">
                   {s.data.section}
                 </span>
               )}
@@ -81,6 +88,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
         // first slide, beating the slide's own arrow-key handler.
         if (!document.querySelector("[data-first-slide]")) return;
         if (!FIRST) return;
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
         // Enter is left alone: the links in the index handle it themselves, and
         // taking it over would send a focused link to the first slide instead.
         if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") {
