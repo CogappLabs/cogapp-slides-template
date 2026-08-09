@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import "../../styles/global.css";
-import { slideOrder, deck } from "../../deck.config";
+import "@/styles/global.css";
+import { slideOrder, deck } from "@/deck.config";
 
 export async function getStaticPaths() {
   const all = await getCollection("slides");
@@ -11,7 +11,8 @@ export async function getStaticPaths() {
     const slide = bySlug.get(slug);
     if (!slide) {
       throw new Error(
-        `Slide order references "${slug}" but no matching mdx file in src/content/slides/`,
+        `Slide order references "${slug}" but no matching mdx file in src/content/slides/. ` +
+          `If ${slug}.mdx does exist, the dev server's content cache is stale: restart it.`,
       );
     }
     const nextSlug = i < total - 1 ? slideOrder[i + 1] : undefined;
@@ -91,6 +92,12 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
         {next && (
           <a href={`${BASE}/presenter/${next}`} rel="next" class="px-4 py-2 border border-cream/30 rounded no-underline text-cream">Next →</a>
         )}
+        <button
+          type="button"
+          data-deck-fullscreen
+          title="Fullscreen the deck window (F)"
+          class="ml-auto px-4 py-2 border border-cream/30 rounded bg-transparent text-cream cursor-pointer font-sans text-sm"
+        >Fullscreen deck</button>
       </nav>
     </main>
 
@@ -122,19 +129,34 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
       // Announce where we are, so a deck window opened later can catch up.
       channel?.postMessage({ from: me, slug });
 
+      // Fullscreen belongs to the deck window, never this one: notes are for
+      // the presenter, so making them fullscreen would hide the thing being
+      // controlled. `f` asks the deck to toggle instead.
+      const toggleDeckFullscreen = () => channel?.postMessage({ from: me, fullscreen: true });
+
       document.addEventListener("keydown", (e) => {
         if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        const el = e.target;
+        if (el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
         if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") {
           e.preventDefault();
           go(next);
         } else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") {
           e.preventDefault();
           go(prev);
+        } else if (e.key === "f" || e.key === "F") {
+          e.preventDefault();
+          toggleDeckFullscreen();
         }
       });
 
       document.addEventListener("click", (e) => {
-        const link = (e.target as HTMLElement).closest?.('nav a[rel="prev"], nav a[rel="next"]');
+        const target = e.target as HTMLElement;
+        if (target.closest?.("[data-deck-fullscreen]")) {
+          toggleDeckFullscreen();
+          return;
+        }
+        const link = target.closest?.('nav a[rel="prev"], nav a[rel="next"]');
         if (!(link instanceof HTMLAnchorElement)) return;
         e.preventDefault();
         go(link.rel === "prev" ? prev : next);

@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
-import SlideLayout from "../../layouts/SlideLayout.astro";
-import { slideOrder } from "../../deck.config";
+import SlideLayout from "@/layouts/SlideLayout.astro";
+import { slideOrder } from "@/deck.config";
 
 export async function getStaticPaths() {
   const all = await getCollection("slides");
@@ -12,8 +12,12 @@ export async function getStaticPaths() {
   return slideOrder.map((slug, i) => {
     const slide = bySlug.get(slug);
     if (!slide) {
+      // Astro's dev server caches the collection, so this fires when the file
+      // exists but the cache is stale. Restart the dev server; if it persists,
+      // the slug really has no file.
       throw new Error(
-        `Slide order references "${slug}" but no matching mdx file in src/content/slides/`,
+        `Slide order references "${slug}" but no matching mdx file in src/content/slides/. ` +
+          `If ${slug}.mdx does exist, the dev server's content cache is stale: restart it.`,
       );
     }
     return {
