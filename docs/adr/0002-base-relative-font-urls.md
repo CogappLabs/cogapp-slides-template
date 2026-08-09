@@ -1,6 +1,6 @@
 # Font URLs are relative to the stylesheet, not absolute under `base`
 
-`@font-face` `src` URLs in `src/styles/global.css` use `../fonts/...`, relative
+`@font-face` `src` URLs in `src/styles/fonts.css` use `../fonts/...`, relative
 to the stylesheet, instead of an absolute `/<base>/fonts/...`. Astro bundles the
 CSS under `<base>/_astro/`, so `../fonts/` resolves to `<base>/fonts/` and
 auto-follows `base`. This makes the deck's `base` the single rename pivot:

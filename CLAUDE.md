@@ -30,7 +30,7 @@ server, `rm -rf .astro node_modules/.vite`, and start it again.
   pastels are accents for section dividers and sparse feature slides.
 - Slide text colour comes from the `bg` (set in `SlideLayout`). Inside a slide,
   prefer `currentColor` / opacity over hardcoding a text colour, so it adapts.
-- `src/styles/global.css` `.prose-slide` styles the raw HTML that MDX produces
+- `src/styles/slide-content.css` `.prose-slide` styles the raw HTML MDX produces
   (`h1`, `p`, `ul`, `blockquote`, `table`…). Everything else uses Tailwind
   utilities. Edit `.prose-slide` to change default slide typography.
 
@@ -71,7 +71,7 @@ which the deck opens with `P`. It is served with the deck, so treat it as public
 - **`base` is the single rename pivot.** To rename/redeploy the deck, edit only
   `base` (and `site`) in `astro.config.mjs`. Fonts, home link, and slide links
   all derive from it. Don't hardcode the base path anywhere, and don't change
-  the `../fonts/` URLs in `global.css` to absolute paths (see docs/adr/0002).
+  the `../fonts/` URLs in `fonts.css` to absolute paths (see docs/adr/0002).
 - **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
   redistribution rights, so it can be public (see docs/adr/0001). Reusing the
   fonts outside a Cogapp context is the reuser's licensing responsibility.

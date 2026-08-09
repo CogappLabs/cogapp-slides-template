@@ -110,6 +110,13 @@ All colours are `--color-*` tokens in `src/styles/global.css` and resolve as
 Tailwind utilities (`bg-pink`, `text-slate`, etc.). Two muted neutrals,
 `grey` and `light-grey`, round out the palette for secondary text and panels.
 
+### Stylesheets
+
+`global.css` holds the `@theme` tokens and imports the rest: `fonts.css`
+(`@font-face`), `transitions.css` (slide animation), and `slide-content.css`
+(`.prose-slide`, the typography for MDX output). Everything outside
+`.prose-slide` is Tailwind utilities.
+
 ## Writing a slide
 
 Slides are markdown. Headings, lists, tables, quotes, code and links are styled
@@ -140,7 +147,7 @@ Cogapp brand faces. Cogapp holds redistribution rights for both:
 - **Civil** (ABC Dinamo) → `--font-sans` (body, labels, UI)
 - **Untitled Serif** (Klim) → `--font-serif` (headings)
 
-Files live in `public/fonts/`, declared as `@font-face` in `global.css`, and
+Files live in `public/fonts/`, declared as `@font-face` in `fonts.css`, and
 exposed as Tailwind tokens so `font-sans` / `font-serif` resolve everywhere.
 Reusing the fonts outside a Cogapp context is the reuser's responsibility.
 
