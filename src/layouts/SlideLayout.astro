@@ -227,9 +227,19 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         document.addEventListener("click", onClick, true);
         document.addEventListener("fullscreenchange", syncFullscreen);
         document.addEventListener("astro:before-preparation", onBeforePreparation);
+        // The zoom cursor is a hint that alt-click does something. keyup alone
+        // would miss the case where the window loses focus with alt still held
+        // (alt-tab), leaving the cursor stuck.
+        document.addEventListener("keyup", syncZoomCursor);
+        window.addEventListener("blur", clearZoomCursor);
         syncFullscreen();
         announce();
       };
+
+      const syncZoomCursor = (e) => {
+        document.body.classList.toggle("cursor-zoom-in", (e.altKey || e.ctrlKey) && !zoomed);
+      };
+      const clearZoomCursor = () => document.body.classList.remove("cursor-zoom-in");
 
       // Presenter sync. BroadcastChannel reaches other tabs in this browser
       // only, so someone opening the presenter URL elsewhere simply doesn't
@@ -299,6 +309,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
         main.style.transformOrigin = `${x}px ${y}px`;
         main.style.transform = `scale(${ZOOM})`;
         zoomed = true;
+        clearZoomCursor();
       };
       const resetZoom = () => {
         if (!zoomed) return;
@@ -345,6 +356,7 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
       };
 
       const onKey = (e) => {
+        syncZoomCursor(e);
         const nav = document.querySelector('nav[aria-label="Slide navigation"]');
         if (!nav) return;
         // Leave every modifier combination to the browser, so Alt+Left still
