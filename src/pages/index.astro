@@ -2,8 +2,7 @@
 import { getCollection } from "astro:content";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import { slideOrder } from "../content/order";
-import { deck } from "../content/deck";
+import { slideOrder, deck } from "../deck.config";
 
 const all = await getCollection("slides");
 const bySlug = new Map(all.map((s) => [s.id, s]));

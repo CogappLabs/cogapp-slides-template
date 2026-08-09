@@ -7,11 +7,11 @@ notes: |
   Speaker notes live in frontmatter. They don't render on the slide; keep
   them here as a script for whoever is presenting.
 
-  The heading, subtitle and credit all come from `src/content/deck.ts`, so
+  The heading, subtitle and credit all come from `src/deck.config.ts`, so
   the title slide and the index stay in step.
 ---
 
-import { deck } from "../../content/deck";
+import { deck } from "../../deck.config";
 import Byline from "../../components/Byline.astro";
 
 # {deck.title}

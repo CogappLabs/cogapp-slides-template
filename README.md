@@ -23,8 +23,8 @@ Then, in the new repo:
    org Pages URL). Everything else, including the font URLs, follows `base`
    automatically.
 2. Replace the example slides in `src/content/slides/` and the order in
-   `src/content/order.ts`.
-3. Set the deck title, subtitle and credit line in `src/content/deck.ts`. The
+   `src/deck.config.ts`.
+3. Set the deck title, subtitle and credit line in `src/deck.config.ts`. The
    title slide and the index both read from it.
 
 ## Run
@@ -72,7 +72,7 @@ Node 22.18+ / 23+ via built-in type stripping.
 ## Slides
 
 - Content lives in `src/content/slides/<slug>.mdx`
-- Order is set in `src/content/order.ts` (move a line to reorder). A slide file
+- Order is set in `src/deck.config.ts` (move a line to reorder). A slide file
   not listed there is excluded with no warning; a slug listed with no file is a
   build error.
 - Frontmatter: `title`, optional `bg`, `align`, `section`, `eyebrow`, `notes`, `docs`
@@ -134,7 +134,7 @@ Components cover the things markdown has no syntax for.
 - `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
-- `Byline`: Cogapp logo with the credit line from `deck.ts`
+- `Byline`: Cogapp logo with the credit line from `deck.config.ts`
 - `References`: collapsible list rendered from the `docs` frontmatter
 - `Poll`: React island, a live show-of-hands tally. Needs a `client:*` directive
 

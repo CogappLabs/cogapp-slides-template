@@ -1,8 +1,8 @@
 ---
-import { deck } from "../content/deck";
+import { deck } from "../deck.config";
 
 interface Props {
-  /** Defaults to `credit` in deck.ts; pass `null` for the logo alone. */
+  /** Defaults to `credit` in deck.config.ts; pass `null` for the logo alone. */
   credit?: string | null;
 }
 const { credit = deck.credit } = Astro.props;

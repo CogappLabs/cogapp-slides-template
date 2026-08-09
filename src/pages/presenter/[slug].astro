@@ -1,8 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import "../../styles/global.css";
-import { slideOrder } from "../../content/order";
-import { deck } from "../../content/deck";
+import { slideOrder, deck } from "../../deck.config";
 
 export async function getStaticPaths() {
   const all = await getCollection("slides");

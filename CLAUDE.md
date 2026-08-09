@@ -7,16 +7,17 @@ the short list of things that are easy to get wrong.
 ## Adding or editing a slide
 
 1. Create `src/content/slides/<slug>.mdx`. The slug is the filename minus `.mdx`.
-2. Add the slug to the list in `src/content/order.ts`, in the position you want.
+2. Add the slug to `slideOrder` in `src/deck.config.ts`, where you want it.
 3. Frontmatter: `title` (required); optional `bg`, `align`, `section`, `eyebrow`,
    `notes`, `docs`.
 
-A slide file not listed in `order.ts` is excluded from the deck with no error. A slug listed with no matching file is a build error. `order.ts` is
-the single source of truth for sequence.
+A slide file missing from `slideOrder` is excluded from the deck with no error;
+a slug there with no matching file is a build error. It is the single source of
+truth for sequence.
 
 A running dev server can miss a brand-new slide and report "Order references
 missing slide", or serve it half-rendered. The content collection is cached, and
-adding a file plus its `order.ts` entry is not a change it picks up. Stop the
+adding a file plus its `slideOrder` entry is not a change it picks up. Stop the
 server, `rm -rf .astro node_modules/.vite`, and start it again.
 
 ## Theme rules
@@ -49,7 +50,7 @@ markdown can't express the thing. `.prose-slide` already handles:
 Adding `class="..."` to markup in a slide should be rare. If you find yourself
 repeating one, it belongs in `.prose-slide` or a component instead.
 
-The deck's title, subtitle and credit line live in `src/content/deck.ts`. The
+The deck's title, subtitle and credit line live in `src/deck.config.ts`. The
 title slide and the index read from it, so change it in one place.
 
 `notes` frontmatter is the script for the presenter view at `/presenter/<slug>`,
@@ -61,7 +62,7 @@ which the deck opens with `P`. It is served with the deck, so treat it as public
   Only needed directly for a second label inside a slide.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
-- `Byline`: Cogapp logo with the credit from `deck.ts`; pass `credit` to override.
+- `Byline`: Cogapp logo with the credit from `deck.config.ts`; pass `credit` to override.
 - `References`: the collapsible list rendered from `docs` frontmatter.
 - `Poll`: React island (`.tsx`), a live show-of-hands tally. Needs a `client:*`
   directive or it renders static. The only component that ships JavaScript.

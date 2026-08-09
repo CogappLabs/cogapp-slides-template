@@ -13,7 +13,7 @@ import { dirname, resolve } from "node:path";
 import { PDFDocument } from "pdf-lib";
 import { writeFile } from "node:fs/promises";
 import config from "../astro.config.mjs";
-import { slideOrder } from "../src/content/order.ts";
+import { slideOrder } from "../src/deck.config.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
