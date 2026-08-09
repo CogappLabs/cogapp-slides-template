@@ -1,10 +1,9 @@
 ---
-import "../styles/global.css";
+import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import References from "../components/References.astro";
-import Eyebrow from "../components/Eyebrow.astro";
-import { deck } from "../deck.config";
-import { surfaces, type Surface } from "../deck.config";
+import References from "@/components/References.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import { deck, surfaces, type Surface } from "@/deck.config";
 
 const slideAnim = {
   forwards: {
@@ -257,7 +256,15 @@ const slidePath = (slug: string) => `${BASE}/slide/${slug}`;
 
       channel?.addEventListener("message", (e) => {
         const d = e.data;
-        if (!d || d.from === me || !d.slug || d.slug === currentSlug()) return;
+        if (!d || d.from === me) return;
+        // The presenter drives fullscreen here, because this is the window an
+        // audience sees. A browser may refuse without a gesture in this window;
+        // toggleFullscreen swallows that.
+        if (d.fullscreen) {
+          toggleFullscreen();
+          return;
+        }
+        if (!d.slug || d.slug === currentSlug()) return;
         const base = document.documentElement.dataset.slideBase || "";
         navigate(`${base}/slide/${d.slug}`);
       });

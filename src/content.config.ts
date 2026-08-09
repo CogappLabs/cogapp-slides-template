@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-import { surfaceNames } from "./deck.config";
+import { surfaceNames } from "@/deck.config";
 
 const slides = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/slides" }),

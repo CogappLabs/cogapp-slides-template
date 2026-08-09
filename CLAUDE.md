@@ -52,6 +52,11 @@ markdown can't express the thing. `.prose-slide` already handles:
 Adding `class="..."` to markup in a slide should be rare. If you find yourself
 repeating one, it belongs in `.prose-slide` or a component instead.
 
+Import through the `@/` alias (`@/components/Video.astro`), which points at
+`src/`, so a slide reads the same wherever it sits. `scripts/build-pdf.ts` is
+the exception: it runs under plain Node, which does not resolve tsconfig paths,
+so it imports relatively.
+
 The deck's title, subtitle and credit line live in `src/deck.config.ts`. The
 title slide and the index read from it, so change it in one place.
 
