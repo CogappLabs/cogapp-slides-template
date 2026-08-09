@@ -67,12 +67,19 @@ which the deck opens with `P`. It is served with the deck, so treat it as public
 
 - `Eyebrow`: the uppercase label the layout renders from `eyebrow`/`section`.
   Only needed directly for a second label inside a slide.
-- `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
+- `Terminal`: dark terminal window with chrome; `text`, optional `title` and
+  `align`.
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
+- `Video`: 16:9 YouTube embed; takes an id or share URL, and a `title` that
+  becomes the iframe's accessible name.
 - `Byline`: Cogapp logo with the credit from `deck.config.ts`; pass `credit` to override.
 - `References`: the collapsible list rendered from `docs` frontmatter.
 - `Poll`: React island (`.tsx`), a live show-of-hands tally. Needs a `client:*`
   directive or it renders static. The only component that ships JavaScript.
+
+Two layout classes exist for what Tailwind has no equivalent of: `stretch`
+(fill the height left on the slide, for an image or video) and `stack` (layer
+children in one grid cell). Everything else is a normal Tailwind utility.
 
 ## Don't break these
 

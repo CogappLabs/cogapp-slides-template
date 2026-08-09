@@ -1,9 +1,11 @@
 /* The deck's only stylesheet entry point. The theme tokens stay here because
    they are Tailwind's own config surface; the rest is split by job:
 
-   fonts.css          @font-face for Civil and Untitled Serif
-   transitions.css    slide transition keyframes and the reduced-motion opt-out
-   slide-content.css  .prose-slide, which styles the raw HTML that MDX produces
+   fonts.css            @font-face for Civil and Untitled Serif
+   transitions.css      slide transition keyframes and the reduced-motion opt-out
+   slide-content.css    .prose-slide, which styles the raw HTML that MDX produces
+   layout-utilities.css `stretch` and `stack`, the two layout classes Tailwind
+                        has no equivalent for
 
    CSS requires every @import before other rules, so they sit above `@theme`
    even though the tokens are the thing they depend on.
@@ -12,6 +14,7 @@
 @import "./fonts.css";
 @import "./transitions.css";
 @import "./slide-content.css";
+@import "./layout-utilities.css";
 
 /* Tokens become utilities: --color-pink gives you `bg-pink` and `text-pink`.
    Add a colour here rather than reaching for a hex value in a slide. */

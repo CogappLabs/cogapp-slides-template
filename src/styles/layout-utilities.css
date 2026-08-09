@@ -1,0 +1,32 @@
+/* ---------------------------------------------------------------------------
+   Two layout utilities Tailwind has no equivalent for, borrowed from reveal.js.
+   Everything else a slide needs (flex, grid, gap, alignment) is already a
+   Tailwind class, so reach for those first.
+--------------------------------------------------------------------------- */
+
+/* Fill the height left over on the slide. Put it on the one element that should
+   absorb the space (an image, a video, a code block) and it grows or shrinks
+   with the viewport instead of pushing content off the bottom. Needs a flex
+   column parent, which `align: center` slides already are. */
+@utility stretch {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  & > :is(img, video, iframe) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+/* Layer children in the same grid cell, centred on each other. Useful for
+   captions over an image, or building up a diagram. */
+@utility stack {
+  display: grid;
+  grid-template-rows: 100%;
+
+  & > * {
+    grid-area: 1/1;
+    margin: auto;
+  }
+}
