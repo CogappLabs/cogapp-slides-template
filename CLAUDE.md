@@ -49,8 +49,8 @@ markdown can't express the thing. `.prose-slide` already handles:
 Adding `class="..."` to markup in a slide should be rare. If you find yourself
 repeating one, it belongs in `.prose-slide` or a component instead.
 
-The deck's own title and subtitle live in `src/content/deck.ts`, not in the
-markup of `src/pages/index.astro`.
+The deck's title, subtitle and credit line live in `src/content/deck.ts`. The
+title slide and the index read from it, so change it in one place.
 
 ## Components (in `src/components/`)
 
@@ -58,7 +58,7 @@ markup of `src/pages/index.astro`.
   Only needed directly for a second label inside a slide.
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`.
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side.
-- `Byline`: Cogapp logo with an optional credit, for a title slide.
+- `Byline`: Cogapp logo with the credit from `deck.ts`; pass `credit` to override.
 - `References`: the collapsible list rendered from `docs` frontmatter.
 - `Poll`: React island (`.tsx`), a live show-of-hands tally. Needs a `client:*`
   directive or it renders static. The only component that ships JavaScript.

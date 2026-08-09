@@ -3,6 +3,8 @@
 export const deck = {
   title: "Deck title",
   subtitle: "Subtitle · Context line",
+  /** Shown beside the logo on the title slide. */
+  credit: "Presenter · Date",
   /** Appended to each page's <title>, after the slide name. */
   suffix: "Cogapp",
 } as const;

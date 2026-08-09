@@ -1,9 +1,11 @@
 ---
+import { deck } from "../content/deck";
+
 interface Props {
-  /** Presenter, date, or whatever belongs beside the logo. */
-  credit?: string;
+  /** Defaults to `credit` in deck.ts; pass `null` for the logo alone. */
+  credit?: string | null;
 }
-const { credit } = Astro.props;
+const { credit = deck.credit } = Astro.props;
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 

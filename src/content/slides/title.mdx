@@ -6,12 +6,16 @@ eyebrow: "Project · Client · Context"
 notes: |
   Speaker notes live in frontmatter. They don't render on the slide; keep
   them here as a script for whoever is presenting.
+
+  The heading, subtitle and credit all come from `src/content/deck.ts`, so
+  the title slide and the index stay in step.
 ---
 
+import { deck } from "../../content/deck";
 import Byline from "../../components/Byline.astro";
 
-# Deck title
+# {deck.title}
 
-A one-line subtitle that sets up what the deck covers.
+<p>{deck.subtitle}</p>
 
-<Byline credit="Presenter · Date" />
+<Byline />

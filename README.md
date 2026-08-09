@@ -24,7 +24,8 @@ Then, in the new repo:
    automatically.
 2. Replace the example slides in `src/content/slides/` and the order in
    `src/content/order.ts`.
-3. Set the deck title and subtitle in `src/content/deck.ts`.
+3. Set the deck title, subtitle and credit line in `src/content/deck.ts`. The
+   title slide and the index both read from it.
 
 ## Run
 
@@ -115,7 +116,7 @@ Components cover the things markdown has no syntax for.
 - `Eyebrow`: the uppercase label rendered from `eyebrow`/`section` frontmatter
 - `Terminal`: dark terminal window with chrome; pass `text` and optional `title`
 - `TwoCol`: two columns; `ratio="2-1"` or `"1-2"` to weight a side
-- `Byline`: Cogapp logo with an optional credit line, for a title slide
+- `Byline`: Cogapp logo with the credit line from `deck.ts`
 - `References`: collapsible list rendered from the `docs` frontmatter
 - `Poll`: React island, a live show-of-hands tally. Needs a `client:*` directive
 
