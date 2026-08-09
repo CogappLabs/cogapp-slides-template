@@ -36,3 +36,36 @@ The URL path prefix the deck is served under, set once as `base` in
 `org.github.io/my-deck`). The single rename pivot: fonts, the home link, and
 slide links all derive from it, so changing it is the only edit a rename needs.
 _Avoid_: path prefix, root, mount point
+
+## Decisions
+
+Two things in here look like mistakes and are not. Both have bitten someone
+already.
+
+### Font URLs are relative to the stylesheet
+
+`@font-face` `src` URLs in `src/styles/fonts.css` use `../fonts/...`, relative
+to the stylesheet, rather than an absolute `/<base>/fonts/...`. Astro bundles
+the CSS under `<base>/_astro/`, so `../fonts/` resolves to `<base>/fonts/` and
+follows `base` on its own. That is what makes `base` the single rename pivot.
+
+The absolute form is the obvious choice, and is what the decks this template
+came from used. It hardcodes the repo name into the CSS: rename the deck, miss
+that file, and the fonts 404 and fall back to Georgia with no error at all.
+Verified by renaming `base` and rebuilding with no other edit.
+
+So: don't "fix" these to absolute paths. The one thing to watch is that this
+relies on Astro bundling CSS one directory deep under `base`; if that layout
+changes, the `../` depth has to change with it.
+
+### Brand fonts are committed to the repo
+
+Civil (ABC Dinamo) and Untitled Serif (Klim) live in `public/fonts/` so a new
+deck is on-brand immediately, rather than shipping fallbacks and asking each
+author to find the files. Cogapp holds redistribution rights for both, which is
+why this repo can be public.
+
+Holding redistribution rights is not the same as granting forkers a licence.
+Anyone reusing the fonts outside a Cogapp context is responsible for their own.
+If those rights ever change, the fonts have to come out of `public/fonts/` and
+out of git history, with `@font-face` switched to a fallback.

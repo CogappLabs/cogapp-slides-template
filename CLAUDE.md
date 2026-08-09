@@ -71,9 +71,9 @@ which the deck opens with `P`. It is served with the deck, so treat it as public
 - **`base` is the single rename pivot.** To rename/redeploy the deck, edit only
   `base` (and `site`) in `astro.config.mjs`. Fonts, home link, and slide links
   all derive from it. Don't hardcode the base path anywhere, and don't change
-  the `../fonts/` URLs in `fonts.css` to absolute paths (see docs/adr/0002).
+  the `../fonts/` URLs in `fonts.css` to absolute paths (see CONTEXT.md).
 - **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
-  redistribution rights, so it can be public (see docs/adr/0001). Reusing the
+  redistribution rights, so it can be public (see CONTEXT.md). Reusing the
   fonts outside a Cogapp context is the reuser's licensing responsibility.
 - **The `@vitejs/plugin-react` override in `package.json`** is temporary. It
   forces v6 (the Rolldown/Oxc build) because `@astrojs/react` still asks for v5,
