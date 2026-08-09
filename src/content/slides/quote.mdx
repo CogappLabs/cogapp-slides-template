@@ -4,12 +4,14 @@ section: Components
 bg: green
 align: center
 notes: |
-  The Quote component is a large italic serif pull quote with an optional
-  attribution line. Leave `cite` off for an unattributed quote.
+  A markdown blockquote is the pull quote. Leave a blank line before a final
+  paragraph inside it and that line becomes the attribution. A quote with a
+  single paragraph stays unattributed.
 ---
 
-import Quote from "../../components/Quote.astro";
-
-<Quote cite="Name, role">A short, punchy quotation reads well centred on a pastel background. Keep it to a sentence or two.</Quote>
+> A short, punchy quotation reads well centred on a pastel background. Keep it
+> to a sentence or two.
+>
+> Name, role
 
 Follow-up context sits below the quote in body text.
