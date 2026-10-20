@@ -94,8 +94,9 @@ Add a key binding in `deck.ts`, then add it to the `shortcuts` list in
 
 - **`base` is the single rename pivot.** To rename/redeploy the deck, edit only
   `base` (and `site`) in `astro.config.mjs`. Fonts, home link, and slide links
-  all derive from it. Don't hardcode the base path anywhere, and don't change
-  the `../fonts/` URLs in `fonts.css` to absolute paths (see CONTEXT.md).
+  all derive from it. Don't hardcode the base path anywhere. Fonts stay in
+  `src/assets/fonts/` with relative URLs in `fonts.css`; moving them to
+  `public/` breaks them in dev (see CONTEXT.md).
 - **Fonts** (Civil, Untitled Serif) are committed to the repo; Cogapp holds
   redistribution rights, so it can be public (see CONTEXT.md). Reusing the
   fonts outside a Cogapp context is the reuser's licensing responsibility.

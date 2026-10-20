@@ -42,30 +42,31 @@ _Avoid_: path prefix, root, mount point
 Two things in here look like mistakes and are not. Both have bitten someone
 already.
 
-### Font URLs are relative to the stylesheet
+### Fonts are Vite assets, not public files
 
-`@font-face` `src` URLs in `src/styles/fonts.css` use `../fonts/...`, relative
-to the stylesheet, rather than an absolute `/<base>/fonts/...`. Astro bundles
-the CSS under `<base>/_astro/`, so `../fonts/` resolves to `<base>/fonts/` and
-follows `base` on its own. That is what makes `base` the single rename pivot.
+The font files live in `src/assets/fonts/`, and `src/styles/fonts.css` points
+at them with relative URLs (`../assets/fonts/...`). Vite resolves those, hashes
+the files and adds `base`, in dev and in the build alike. The preload links in
+`FontPreloads.astro` import the same files with `?url`, so they get the same
+hashed path. That is what keeps `base` the single rename pivot.
 
-The absolute form is the obvious choice, and is what the decks this template
-came from used. It hardcodes the repo name into the CSS: rename the deck, miss
-that file, and the fonts 404 and fall back to Georgia with no error at all.
-Verified by renaming `base` and rebuilding with no other edit.
+Two other layouts look simpler and both break. An absolute
+`/<base>/fonts/...` hardcodes the repo name into the CSS: rename the deck, miss
+that file, and the fonts 404 and fall back to Georgia with no error. Keeping the
+files in `public/` with a relative `../fonts/` URL works in a build (the CSS
+lands one directory under `base`) but not in dev, where Vite serves the CSS
+from its source path and the URL resolves to `/fonts/...` without `base`.
 
-So: don't "fix" these to absolute paths. The one thing to watch is that this
-relies on Astro bundling CSS one directory deep under `base`; if that layout
-changes, the `../` depth has to change with it.
+So: don't move the fonts back to `public/`, and don't make the URLs absolute.
 
 ### Brand fonts are committed to the repo
 
-Civil (ABC Dinamo) and Untitled Serif (Klim) live in `public/fonts/` so a new
+Civil (ABC Dinamo) and Untitled Serif (Klim) live in `src/assets/fonts/` so a new
 deck is on-brand immediately, rather than shipping fallbacks and asking each
 author to find the files. Cogapp holds redistribution rights for both, which is
 why this repo can be public.
 
 Holding redistribution rights is not the same as granting forkers a licence.
 Anyone reusing the fonts outside a Cogapp context is responsible for their own.
-If those rights ever change, the fonts have to come out of `public/fonts/` and
+If those rights ever change, the fonts have to come out of `src/assets/fonts/` and
 out of git history, with `@font-face` switched to a fallback.

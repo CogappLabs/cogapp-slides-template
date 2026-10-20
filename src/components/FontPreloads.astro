@@ -1,0 +1,11 @@
+---
+// `?url` gives the same hashed, base-prefixed path the @font-face rules in
+// fonts.css resolve to, so the preload and the font request are one fetch.
+import serifRegular from "@/assets/fonts/untitled-serif/untitled-serif-regular.woff2?url";
+import civilRegular from "@/assets/fonts/civil/CivilPremium-Regular2.woff2?url";
+import civilMedium from "@/assets/fonts/civil/CivilPremium-Medium2.woff2?url";
+---
+
+{[serifRegular, civilRegular, civilMedium].map((href) => (
+  <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+))}
