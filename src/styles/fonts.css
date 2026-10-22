@@ -81,6 +81,14 @@
   src: url("../assets/fonts/civil/CivilPremium-SemiBold2.woff2") format("woff2");
   font-display: optional;
 }
+@font-face {
+  font-family: Civil;
+  font-style: normal;
+  font-weight: 700;
+  font-feature-settings: "ss03", "tnum", "zero";
+  src: url("../assets/fonts/civil/CivilPremium-Bold2.woff2") format("woff2");
+  font-display: optional;
+}
 /* Italics at the weights the deck can reach, so bold-inside-italic and the
    like resolve to a real face rather than a synthesised slant. */
 @font-face {
@@ -105,6 +113,14 @@
   font-weight: 600;
   font-feature-settings: "zero";
   src: url("../assets/fonts/civil/CivilPremium-SemiBoldItalic.woff2") format("woff2");
+  font-display: optional;
+}
+@font-face {
+  font-family: Civil;
+  font-style: italic;
+  font-weight: 700;
+  font-feature-settings: "zero";
+  src: url("../assets/fonts/civil/CivilPremium-BoldItalic.woff2") format("woff2");
   font-display: optional;
 }
 
